@@ -1,0 +1,34 @@
+<form class="to-change table-roller-form">
+  <div class="form-row">
+    <select name="table" style="flex:1">
+      {{#each list}}
+      <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{this.name}}</option>
+      {{/each}}
+    </select>
+  </div>
+
+  {{#if current}}
+  <p class="tr-desc">{{current.desc}}</p>
+  {{/if}}
+
+  <div class="tr-actions">
+    <button type="button" class="big-btn" data-action="roll">
+      <i class="fas fa-layer-group"></i> {{localize "TOCHANGE.Tables.roll"}}
+    </button>
+  </div>
+
+  {{#if lastResult}}
+  <section class="tr-result">
+    <header>{{lastResult.tableName}} — #{{lastResult.index}}</header>
+    {{#each lastResult.columns}}
+    <div class="tr-row">
+      <span class="tr-col">{{this}}</span>
+      <span class="tr-val">{{lookup ../lastResult.cells @index}}</span>
+    </div>
+    {{/each}}
+    <button type="button" class="tr-post" data-action="post">
+      <i class="fas fa-comment"></i> {{localize "TOCHANGE.Tables.post"}}
+    </button>
+  </section>
+  {{/if}}
+</form>

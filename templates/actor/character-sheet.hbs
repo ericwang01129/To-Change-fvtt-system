@@ -1,0 +1,209 @@
+<form class="{{cssClass}} to-change-sheet" autocomplete="off">
+
+  <header class="tc-header">
+    <div class="tc-id">
+      <input type="text" name="name" value="{{actor.name}}" placeholder="角色名"/>
+      <input type="text" name="system.concept" value="{{sys.concept}}"
+             placeholder="{{localize 'TOCHANGE.Field.concept'}}" class="concept"/>
+    </div>
+    <div class="tc-meta">
+      <label>{{localize "TOCHANGE.Field.pronouns"}}
+        <input type="text" name="system.pronouns" value="{{sys.pronouns}}" placeholder="they/them"/>
+      </label>
+      <label>{{localize "TOCHANGE.Field.layout"}}
+        <select name="system.layout">
+          {{#each layoutChoices}}
+          <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+          {{/each}}
+        </select>
+      </label>
+      <label class="dead-flag">
+        <input type="checkbox" name="system.dead" {{checked sys.dead}}/>
+        {{localize "TOCHANGE.Field.dead"}}
+      </label>
+    </div>
+  </header>
+
+  <nav class="sheet-tabs tabs">
+    <a class="item" data-tab="main"><i class="fas fa-compass"></i> {{localize "TOCHANGE.Tab.main"}}</a>
+    <a class="item" data-tab="change"><i class="fas fa-spa"></i> {{localize "TOCHANGE.Tab.change"}}</a>
+    <a class="item" data-tab="safety"><i class="fas fa-shield-heart"></i> {{localize "TOCHANGE.Tab.safety"}}</a>
+    <a class="item" data-tab="solo"><i class="fas fa-book"></i> {{localize "TOCHANGE.Tab.solo"}}</a>
+    <a class="item" data-tab="bio"><i class="fas fa-feather"></i> {{localize "TOCHANGE.Tab.bio"}}</a>
+  </nav>
+
+  <section class="sheet-body">
+
+    {{!-- ============ 主要 ============ --}}
+    <div class="tab" data-tab="main">
+
+      <div class="attr-strip">
+        {{#each attrs}}
+        <div class="attr-cell axis-{{this.axis}}" data-attr-key="{{this.key}}">
+          <div class="attr-top">
+            <span class="attr-abbr">{{this.abbr}}</span>
+            <span class="attr-name">{{this.label}}</span>
+          </div>
+          <div class="attr-draw" title="{{localize 'TOCHANGE.Field.drawCount'}}">
+            <span class="num">{{this.draw}}</span>
+            <span class="lbl">{{localize "TOCHANGE.Field.drawCount"}}</span>
+          </div>
+          <div class="attr-damage">
+            {{#each this.damagePips}}
+            <span class="damage-pip {{#if this.on}}on{{/if}}"
+                  data-attr="{{../this.key}}" data-index="{{this.index}}"></span>
+            {{/each}}
+          </div>
+          <button type="button" class="resolve-btn" data-action="resolve" data-attr="{{this.key}}">
+            <i class="fas fa-layer-group"></i> {{localize "TOCHANGE.Resolution.draw"}}
+          </button>
+        </div>
+        {{/each}}
+      </div>
+
+      {{#if isCross}}
+      <div class="change-panel">
+        <h3>{{localize "TOCHANGE.Layout.cross"}}</h3>
+        <p class="panel-hint">{{localize "TOCHANGE.Cross.hint"}}</p>
+        <div class="change-cross">
+          {{#each attrs}}
+          <div class="branch branch-{{this.key}} axis-{{this.axis}}">
+            <span class="branch-label">{{this.abbr}}</span>
+            {{#each this.cells}}
+            <div class="cross-cell {{#if this.changed}}changed{{/if}} {{#if this.damaged}}damaged{{/if}}"
+                 data-attr="{{../this.key}}" data-index="{{this.index}}"
+                 title="{{localize 'TOCHANGE.Cross.cellTip'}}"></div>
+            {{/each}}
+          </div>
+          {{/each}}
+          <div class="permanence {{#if sys.permanence.changed}}changed{{/if}} {{#if sys.permanence.damaged}}damaged{{/if}}">
+            <span class="perm-label">{{localize "TOCHANGE.Field.permanence"}}</span>
+            <div class="perm-btns">
+              <button type="button" data-action="perm-change" title="{{localize 'TOCHANGE.Field.permChange'}}">
+                <i class="fas fa-spa"></i></button>
+              <button type="button" data-action="perm-damage" title="{{localize 'TOCHANGE.Field.permDamage'}}">
+                <i class="fas fa-heart-crack"></i></button>
+            </div>
+            <span class="perm-tag">{{localize "TOCHANGE.Field.noGoingBack"}}</span>
+          </div>
+        </div>
+      </div>
+      {{/if}}
+
+      {{#if isWheel}}
+      <div class="change-panel">
+        <h3>{{localize "TOCHANGE.Layout.wheel"}}</h3>
+        <p class="panel-hint">{{localize "TOCHANGE.Wheel.hint"}}</p>
+        <div class="change-wheel">
+          {{#each wheel}}
+          <div class="quad quad-{{this.key}}">
+            <span class="quad-label">{{this.abbr}}</span>
+            {{#each this.aspects}}
+            <div class="wheel-aspect {{#if this.on}}on{{/if}}"
+                 data-attr="{{../this.key}}" data-index="{{this.index}}">
+              <span class="wa-roman">{{this.roman}}</span>
+              <span class="wa-label">{{this.label}}</span>
+            </div>
+            {{/each}}
+          </div>
+          {{/each}}
+          <div class="wheel-center">
+            <button type="button" class="perm-toggle {{#if sys.permanence.changed}}changed{{/if}}"
+                    data-action="perm-change">
+              <i class="fas fa-spa"></i>
+              <span>{{localize "TOCHANGE.Field.permanence"}}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      {{/if}}
+
+      <div class="cards-panel">
+        <h3>{{localize "TOCHANGE.Cards.title"}}</h3>
+        <div class="card-slots">
+          {{#each cardSlots}}
+          <div class="card-slot slot-{{this.slot}}">
+            <div class="cs-head">{{this.slotLabel}}</div>
+            <div class="cs-art" data-action="pick-card" data-slot="{{this.slot}}">
+              <img src="{{this.img}}" alt="{{this.zh}}"/>
+              {{#if this.has}}<span class="cs-name">{{this.roman}} {{this.zh}}</span>{{/if}}
+            </div>
+            {{#if this.has}}
+            <div class="cs-ability">{{this.ability}}</div>
+            <button type="button" class="cs-clear" data-action="clear-card" data-slot="{{this.slot}}">
+              <i class="fas fa-xmark"></i></button>
+            {{else}}
+            <div class="cs-ability empty">{{localize "TOCHANGE.Cards.empty"}}</div>
+            {{/if}}
+          </div>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+
+    {{!-- ============ 蛻化記錄 ============ --}}
+    <div class="tab" data-tab="change">
+      <div class="totals">
+        <div class="total-box"><span>{{localize "TOCHANGE.Field.totalChange"}}</span><b>{{sys.totalChange}}</b></div>
+        <div class="total-box"><span>{{localize "TOCHANGE.Field.totalDamage"}}</span><b>{{sys.totalDamage}}</b></div>
+        <div class="total-box"><span>{{localize "TOCHANGE.Field.changeRoom"}}</span><b>{{sys.changeRoom}}</b></div>
+      </div>
+      {{#if sys.deathSuggested}}
+      <p class="death-warn"><i class="fas fa-skull"></i> {{localize "TOCHANGE.Field.deathWarn"}}</p>
+      {{/if}}
+      <label class="block-label">{{localize "TOCHANGE.Field.changeLog"}}</label>
+      <textarea name="system.notes" rows="10"
+                placeholder="{{localize 'TOCHANGE.Field.changeLogHint'}}">{{sys.notes}}</textarea>
+
+      {{#if enabledMoves.length}}
+      <label class="block-label">{{localize "TOCHANGE.Field.activeMoves"}}</label>
+      <ul class="moves-list">
+        {{#each enabledMoves}}<li>{{this}}</li>{{/each}}
+      </ul>
+      {{/if}}
+    </div>
+
+    {{!-- ============ 安全 ============ --}}
+    <div class="tab" data-tab="safety">
+      <p class="panel-hint">{{localize "TOCHANGE.Safety.hint"}}</p>
+      <label class="block-label">{{localize "TOCHANGE.Safety.lines"}}</label>
+      <textarea name="system.safety.lines" rows="4">{{sys.safety.lines}}</textarea>
+      <label class="block-label">{{localize "TOCHANGE.Safety.veils"}}</label>
+      <textarea name="system.safety.veils" rows="4">{{sys.safety.veils}}</textarea>
+      <div class="tier-row">
+        <label>{{localize "TOCHANGE.Safety.bodyTier"}}
+          <input type="text" name="system.tiers.body" value="{{sys.tiers.body}}"/>
+        </label>
+        <label>{{localize "TOCHANGE.Safety.mentalTier"}}
+          <input type="number" name="system.tiers.mental" value="{{sys.tiers.mental}}" min="1" max="5"/>
+        </label>
+      </div>
+    </div>
+
+    {{!-- ============ 單人遊玩 ============ --}}
+    <div class="tab" data-tab="solo">
+      <label class="dead-flag">
+        <input type="checkbox" name="system.solo.enabled" {{checked sys.solo.enabled}}/>
+        {{localize "TOCHANGE.Solo.enable"}}
+      </label>
+      {{#if sys.solo.enabled}}
+      <div class="solo-summary">
+        <div class="total-box"><span>{{localize "TOCHANGE.Solo.day"}}</span><b>{{sys.solo.day}}</b></div>
+        <div class="total-box"><span>{{localize "TOCHANGE.Field.totalChange"}}</span><b>{{sys.totalChange}}</b></div>
+      </div>
+      <button type="button" class="big-btn" data-action="solo">
+        <i class="fas fa-book-open"></i> {{localize "TOCHANGE.Solo.openTracker"}}
+      </button>
+      {{else}}
+      <p class="panel-hint">{{localize "TOCHANGE.Solo.disabledHint"}}</p>
+      {{/if}}
+    </div>
+
+    {{!-- ============ 簡介 ============ --}}
+    <div class="tab" data-tab="bio">
+      <label class="block-label">{{localize "TOCHANGE.Field.biography"}}</label>
+      <textarea name="system.biography" rows="16">{{sys.biography}}</textarea>
+    </div>
+
+  </section>
+</form>

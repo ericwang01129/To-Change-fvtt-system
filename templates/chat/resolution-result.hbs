@@ -1,0 +1,31 @@
+<div class="to-change resolution-chat">
+  <header class="rc-header {{resultClass}}">
+    <span class="rc-actor">{{actorName}}</span>
+    <span class="rc-attr">{{attrLabel}}</span>
+    <span class="rc-result {{resultClass}}">{{resultLabel}}</span>
+  </header>
+
+  {{#if isSuccumb}}
+  <p class="rc-succumb"><i class="fas fa-yin-yang"></i> {{localize "TOCHANGE.Resolution.succumbTag"}}</p>
+  {{/if}}
+
+  {{#if drawn.length}}
+  <div class="rc-cards">
+    {{#each drawn}}
+    <div class="rc-card {{#if this.isChosen}}chosen{{/if}}">
+      <img src="{{this.img}}" alt="{{this.zh}}"/>
+      <span class="rc-card-name">{{this.roman}} {{this.zh}}</span>
+    </div>
+    {{/each}}
+  </div>
+  {{/if}}
+
+  {{#if chosen}}
+  <p class="rc-chosen">{{localize "TOCHANGE.Resolution.chosenLabel"}}：
+    <b>{{chosen.roman}} {{chosen.zh}}</b> — {{chosen.effectText}}</p>
+  {{/if}}
+
+  {{#each notes}}
+  <p class="rc-note"><i class="fas fa-angle-right"></i> {{this}}</p>
+  {{/each}}
+</div>

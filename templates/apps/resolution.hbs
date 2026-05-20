@@ -1,0 +1,80 @@
+<form class="to-change resolution">
+
+  {{#if isSetup}}
+  <section class="resolution-setup">
+    <p class="hint">{{localize "TOCHANGE.Resolution.setupHint"}}</p>
+
+    <div class="attr-pick">
+      {{#each attrChoices}}
+      <button type="button" class="attr-btn {{#if this.selected}}active{{/if}}"
+              data-attr="{{this.key}}" title="{{this.label}}">
+        <span class="abbr">{{this.abbr}}</span>
+        <span class="name">{{this.label}}</span>
+      </button>
+      {{/each}}
+    </div>
+
+    <div class="assist-row">
+      <label for="tc-assist">{{localize "TOCHANGE.Resolution.assist"}}</label>
+      <input type="number" id="tc-assist" name="assist" value="{{assist}}" min="0" max="6"/>
+    </div>
+
+    <div class="draw-breakdown">
+      <div class="dd"><span>{{localize "TOCHANGE.Resolution.base"}}</span><b>{{draw.base}}</b></div>
+      <div class="dd"><span>{{localize "TOCHANGE.Resolution.assist"}}</span><b>+{{draw.assist}}</b></div>
+      {{#if draw.tower}}<div class="dd tower"><span>{{localize "TOCHANGE.Resolution.tower"}}</span><b>+{{draw.tower}}</b></div>{{/if}}
+      {{#if draw.justice}}<div class="dd justice"><span>{{localize "TOCHANGE.Resolution.justice"}}</span><b>+{{draw.justice}}</b></div>{{/if}}
+      <div class="dd total"><span>{{localize "TOCHANGE.Resolution.total"}}</span><b>{{draw.total}}</b></div>
+    </div>
+
+    <footer class="resolution-actions">
+      <button type="button" data-action="draw" {{#unless draw.total}}disabled{{/unless}}>
+        <i class="fas fa-layer-group"></i> {{localize "TOCHANGE.Resolution.draw"}}
+      </button>
+      {{#if canSuccumb}}
+      <button type="button" class="succumb" data-action="succumb">
+        <i class="fas fa-yin-yang"></i> {{localize "TOCHANGE.Resolution.succumb"}}
+      </button>
+      {{/if}}
+      <button type="button" data-action="cancel">{{localize "TOCHANGE.Common.cancel"}}</button>
+    </footer>
+  </section>
+  {{/if}}
+
+  {{#if isReveal}}
+  <section class="resolution-reveal">
+    <p class="hint">{{localize "TOCHANGE.Resolution.revealHint"}}</p>
+
+    {{#each triggers}}
+    <p class="trigger-note"><i class="fas fa-bolt"></i> {{this}}</p>
+    {{/each}}
+
+    <div class="card-grid">
+      {{#each drawn}}
+      <div class="future-card {{#unless this.selectable}}locked{{/unless}}"
+           {{#if this.selectable}}data-card="{{this.num}}"{{/if}}>
+        <img src="{{this.img}}" alt="{{this.zh}}"/>
+        <div class="card-cap">
+          <span class="roman">{{this.roman}}</span>
+          <span class="zh">{{this.zh}}</span>
+        </div>
+        <div class="card-effect">{{this.effectText}}</div>
+        {{#unless this.selectable}}
+        <div class="card-lock"><i class="fas fa-lock"></i> {{localize "TOCHANGE.Resolution.deathLockedShort"}}</div>
+        {{/unless}}
+      </div>
+      {{/each}}
+    </div>
+
+    <footer class="resolution-actions">
+      {{#if canSuccumb}}
+      <button type="button" class="succumb" data-action="succumb">
+        <i class="fas fa-yin-yang"></i> {{localize "TOCHANGE.Resolution.succumb"}}
+      </button>
+      {{/if}}
+      <button type="button" data-action="cancel">{{localize "TOCHANGE.Common.cancel"}}</button>
+    </footer>
+  </section>
+  {{/if}}
+
+</form>

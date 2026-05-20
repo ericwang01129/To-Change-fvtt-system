@@ -1,0 +1,18 @@
+<form class="to-change story-moves-form">
+  <p class="hint">{{localize "TOCHANGE.Settings.movesMenu.hint"}}</p>
+  <div class="moves-grid">
+    {{#each moves}}
+    <label class="move-row">
+      <input type="checkbox" name="{{this.key}}" {{checked this.on}}/>
+      <span class="move-name">
+        {{this.label}}
+        {{#if this.automatable}}<i class="fas fa-gears" title="可自動化"></i>{{/if}}
+      </span>
+      <span class="move-hint">{{this.hint}}</span>
+    </label>
+    {{/each}}
+  </div>
+  <footer>
+    <button type="submit"><i class="fas fa-floppy-disk"></i> {{localize "TOCHANGE.Common.save"}}</button>
+  </footer>
+</form>

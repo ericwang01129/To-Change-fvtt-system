@@ -1,0 +1,49 @@
+{
+  "Actor": {
+    "types": ["character"],
+    "character": {
+      "concept": "",
+      "pronouns": "",
+      "biography": "",
+      "notes": "",
+      "layout": "cross",
+      "attributes": {
+        "mf": { "max": 3, "damage": 0, "changed": 0 },
+        "ma": { "max": 3, "damage": 0, "changed": 0 },
+        "pf": { "max": 3, "damage": 0, "changed": 0 },
+        "pa": { "max": 3, "damage": 0, "changed": 0 }
+      },
+      "permanence": {
+        "changed": false,
+        "damaged": false
+      },
+      "wheel": {
+        "pa": [false, false, false],
+        "ma": [false, false, false],
+        "pf": [false, false, false],
+        "mf": [false, false, false]
+      },
+      "cards": {
+        "face": null,
+        "rising": null,
+        "falling": null
+      },
+      "tiers": {
+        "body": "",
+        "mental": 3
+      },
+      "safety": {
+        "lines": "",
+        "veils": ""
+      },
+      "solo": {
+        "enabled": false,
+        "startingCard": null,
+        "day": 1,
+        "polarity": "upright",
+        "journal": ""
+      },
+      "dead": false
+    }
+  }
+}

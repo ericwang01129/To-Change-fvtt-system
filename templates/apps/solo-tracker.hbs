@@ -1,0 +1,54 @@
+<form class="to-change solo-tracker-form">
+
+  {{#unless hasStart}}
+  <section class="solo-pick-start">
+    <p class="hint">{{localize "TOCHANGE.Solo.pickStartHint"}}</p>
+    <div class="form-row">
+      <select name="start-card" style="flex:1">
+        {{#each arcanaList}}
+        <option value="{{this.num}}">{{this.label}}</option>
+        {{/each}}
+      </select>
+      <button type="button" data-action="set-start">
+        <i class="fas fa-check"></i> {{localize "TOCHANGE.Common.confirm"}}
+      </button>
+    </div>
+  </section>
+  {{else}}
+
+  <section class="solo-start-card">
+    <img src="{{startView.img}}" alt="{{startView.zh}}"/>
+    <div class="ssc-body">
+      <h3>{{startView.roman}} {{startView.zh}}<small>{{startView.en}}</small></h3>
+      <p class="ssc-rule">{{startView.startRule}}</p>
+      {{#if threshold}}
+      <p class="ssc-threshold">{{localize "TOCHANGE.Solo.thresholdLabel"}}：{{threshold}}</p>
+      {{/if}}
+    </div>
+  </section>
+
+  <section class="solo-status">
+    <div class="total-box"><span>{{localize "TOCHANGE.Solo.day"}}</span><b>{{day}}</b></div>
+    <div class="total-box"><span>{{localize "TOCHANGE.Field.totalChange"}}</span><b>{{totalChange}}</b></div>
+  </section>
+
+  <div class="solo-actions">
+    <button type="button" class="big-btn" data-action="advance">
+      <i class="fas fa-sun"></i> {{localize "TOCHANGE.Solo.advance"}}
+    </button>
+    <button type="button" data-action="reset" title="{{localize 'TOCHANGE.Solo.resetTitle'}}">
+      <i class="fas fa-rotate-left"></i>
+    </button>
+  </div>
+
+  <section class="solo-journal">
+    <label class="block-label">{{localize "TOCHANGE.Solo.journal"}}</label>
+    <textarea name="journal" rows="12"
+      placeholder="{{localize 'TOCHANGE.Solo.journalHint'}}">{{journal}}</textarea>
+    <button type="button" data-action="save-journal">
+      <i class="fas fa-floppy-disk"></i> {{localize "TOCHANGE.Solo.saveJournal"}}
+    </button>
+  </section>
+
+  {{/unless}}
+</form>
