@@ -26,10 +26,24 @@
 
 ## 安裝
 
-本系統未上架官方套件庫,請手動安裝:
+本系統未上架官方套件庫,可用下列任一方式安裝。
+
+### 方式 A:資訊清單網址自動安裝(建議)
+
+1. 開啟 Foundry VTT 設定畫面 →「**遊戲系統(Game Systems)**」分頁 →「**安裝系統(Install System)**」。
+2. 在下方「**資訊清單網址(Manifest URL)**」欄位貼上:
+
+   ```
+   https://raw.githubusercontent.com/ericwang01129/To-Change-fvtt-system/main/system.json
+   ```
+
+3. 按「安裝」,Foundry 會自動下載並解壓到 `Data/systems/to-change/`。
+4. 建立新世界時選擇「To Change 蛻化」即可。
+
+### 方式 B:手動安裝
 
 1. 找到 Foundry 的使用者資料夾 `Data/`(設定畫面 → Configuration 可看到路徑)。
-2. 把整個 `fvtt-to-change/` 資料夾複製或 symlink 到 `Data/systems/`,並**改名為 `to-change`**:
+2. 把整個系統資料夾複製或 symlink 到 `Data/systems/`,並**改名為 `to-change`**:
 
    ```
    <FoundryUserData>/Data/systems/to-change/
