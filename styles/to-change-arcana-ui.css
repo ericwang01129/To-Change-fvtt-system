@@ -586,18 +586,40 @@ body.system-to-change .app.window-app .window-header a:hover {
 }
 .to-change .wheel-aspect.on .wa-roman { color: #fff; }
 
+/* 永恆之點 —— 點按切換顏色:淡彩(未蛻化) ⇄ 濃紫(已蛻化) */
 .to-change .wheel-center .perm-toggle {
   border: 3px solid var(--tc-purple);
-  background: radial-gradient(circle at 50% 38%, #fff, var(--tc-pink-soft));
+  background: radial-gradient(circle at 50% 35%, #fff, var(--tc-pink-soft));
   color: var(--tc-purple-deep);
   font-weight: 700;
-  box-shadow: 0 0 14px rgba(154,111,208,.3);
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(154,111,208,.28);
+  transition: transform .12s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.to-change .wheel-center .perm-toggle:hover {
+  border-color: var(--tc-gold);
+  box-shadow: 0 0 18px rgba(201,161,74,.5);
+}
+.to-change .wheel-center .perm-toggle:active {
+  transform: scale(.93);
 }
 .to-change .wheel-center .perm-toggle.changed {
-  background: radial-gradient(circle at 50% 38%, var(--tc-change), var(--tc-purple-deep));
+  background: radial-gradient(circle at 50% 35%, var(--tc-change), var(--tc-purple-deep));
   color: #fff;
   border-color: var(--tc-gold);
+  box-shadow:
+    0 0 20px rgba(154,111,208,.6),
+    inset 0 0 16px rgba(255,255,255,.18);
   animation: tc-pulse 3s ease-in-out infinite;
+}
+.to-change .wheel-center .perm-toggle.changed:hover {
+  box-shadow:
+    0 0 26px rgba(201,161,74,.6),
+    inset 0 0 16px rgba(255,255,255,.22);
+}
+.to-change .wheel-center .perm-toggle.changed i {
+  color: #fff;
+  filter: drop-shadow(0 0 6px rgba(255,255,255,.5));
 }
 
 /* =============================================================

@@ -2,7 +2,7 @@
   "id": "to-change",
   "title": "To Change 蛻化",
   "description": "《To Change》——一款關於「蛻化」的無骰桌上角色扮演遊戲。以塔羅 22 張大阿爾克那組成的「預兆牌」結算行動,角色沿「蛻化十字」或「跨性別蛻化輪盤」累積傷害與蛻化。非公式繁體中文實作。",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "compatibility": {
     "minimum": "11",
     "verified": "13"

@@ -37,39 +37,6 @@
       <div class="dd total"><span>{{localize "TOCHANGE.Resolution.total"}}</span><b>{{draw.total}}</b></div>
     </div>
 
-    <section class="free-draw">
-      <p class="free-draw-head">
-        <i class="fas fa-hand-sparkles"></i> {{localize "TOCHANGE.Resolution.freeDrawTitle"}}
-      </p>
-      <p class="hint">{{localize "TOCHANGE.Resolution.freeDrawHint"}}</p>
-      <div class="free-draw-row">
-        <div class="free-end">
-          <button type="button" class="free-end-btn {{#if freeTop}}active{{/if}}" data-free-end="top">
-            <i class="fas fa-angles-up"></i> {{localize "TOCHANGE.Resolution.freeTop"}}
-          </button>
-          <button type="button" class="free-end-btn {{#if freeBottom}}active{{/if}}" data-free-end="bottom">
-            <i class="fas fa-angles-down"></i> {{localize "TOCHANGE.Resolution.freeBottom"}}
-          </button>
-        </div>
-        <div class="free-count">
-          <label>{{localize "TOCHANGE.Resolution.freeCount"}}</label>
-          <div class="assist-stepper">
-            <button type="button" class="assist-step" data-free-step="-1"
-                    aria-label="−" {{#if freeCountAtMin}}disabled{{/if}}>
-              <i class="fas fa-minus"></i>
-            </button>
-            <span class="assist-value">{{freeCount}}</span>
-            <button type="button" class="assist-step" data-free-step="1"
-                    aria-label="+" {{#if freeCountAtMax}}disabled{{/if}}>
-              <i class="fas fa-plus"></i>
-            </button>
-          </div>
-        </div>
-        <button type="button" class="free-draw-btn" data-action="free-draw">
-          <i class="fas fa-wand-magic-sparkles"></i> {{localize "TOCHANGE.Resolution.freeDraw"}}
-        </button>
-      </div>
-    </section>
 
     <footer class="resolution-actions">
       <button type="button" data-action="draw" {{#unless draw.total}}disabled{{/unless}}>
@@ -125,5 +92,38 @@
     </footer>
   </section>
   {{/if}}
+  <section class="free-draw">
+      <p class="free-draw-head">
+        <i class="fas fa-hand-sparkles"></i> {{localize "TOCHANGE.Resolution.freeDrawTitle"}}
+      </p>
+      <p class="hint">{{localize "TOCHANGE.Resolution.freeDrawHint"}}</p>
+      <div class="free-draw-row">
+        <div class="free-end">
+          <button type="button" class="free-end-btn {{#if freeTop}}active{{/if}}" data-free-end="top">
+            <i class="fas fa-angles-up"></i> {{localize "TOCHANGE.Resolution.freeTop"}}
+          </button>
+          <button type="button" class="free-end-btn {{#if freeBottom}}active{{/if}}" data-free-end="bottom">
+            <i class="fas fa-angles-down"></i> {{localize "TOCHANGE.Resolution.freeBottom"}}
+          </button>
+        </div>
+        <div class="free-count">
+          <label>{{localize "TOCHANGE.Resolution.freeCount"}}</label>
+          <div class="assist-stepper">
+            <button type="button" class="assist-step" data-free-step="-1"
+                    aria-label="−" {{#if freeCountAtMin}}disabled{{/if}}>
+              <i class="fas fa-minus"></i>
+            </button>
+            <span class="assist-value">{{freeCount}}</span>
+            <button type="button" class="assist-step" data-free-step="1"
+                    aria-label="+" {{#if freeCountAtMax}}disabled{{/if}}>
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
+        </div>
+        <button type="button" class="free-draw-btn" data-action="free-draw">
+          <i class="fas fa-wand-magic-sparkles"></i> {{localize "TOCHANGE.Resolution.freeDraw"}}
+        </button>
+      </div>
+    </section>
 
 </form>
