@@ -25,7 +25,7 @@ export class StoryMovesConfig extends FormApplication {
       moves: Object.entries(TO_CHANGE.storyMoves).map(([key, m]) => ({
         key,
         label: game.i18n.localize(m.label),
-        hint: game.i18n.localize(`${m.label}.hint`),
+        hint: game.i18n.localize(`TOCHANGE.Move.${key}.hint`),
         automatable: m.automatable,
         on: !!enabled[key]
       }))

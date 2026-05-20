@@ -55,20 +55,20 @@ TO_CHANGE.layouts = {
 
 /** 故事動作（14 條）。automatable 標記引擎可自動化者。 */
 TO_CHANGE.storyMoves = {
-  weakening: { label: "TOCHANGE.Move.weakening", automatable: true },
-  strengthening: { label: "TOCHANGE.Move.strengthening", automatable: true },
-  conditional: { label: "TOCHANGE.Move.conditional", automatable: false },
-  infectious: { label: "TOCHANGE.Move.infectious", automatable: false },
-  shared: { label: "TOCHANGE.Move.shared", automatable: false },
-  reversible: { label: "TOCHANGE.Move.reversible", automatable: false },
-  initial: { label: "TOCHANGE.Move.initial", automatable: false },
-  environmental: { label: "TOCHANGE.Move.environmental", automatable: false },
-  progressive: { label: "TOCHANGE.Move.progressive", automatable: false },
-  living: { label: "TOCHANGE.Move.living", automatable: false },
-  rules: { label: "TOCHANGE.Move.rules", automatable: false },
-  levels: { label: "TOCHANGE.Move.levels", automatable: false },
-  healing: { label: "TOCHANGE.Move.healing", automatable: false },
-  mirrored: { label: "TOCHANGE.Move.mirrored", automatable: false }
+  weakening: { label: "TOCHANGE.Move.weakening.label", automatable: true },
+  strengthening: { label: "TOCHANGE.Move.strengthening.label", automatable: true },
+  conditional: { label: "TOCHANGE.Move.conditional.label", automatable: false },
+  infectious: { label: "TOCHANGE.Move.infectious.label", automatable: false },
+  shared: { label: "TOCHANGE.Move.shared.label", automatable: false },
+  reversible: { label: "TOCHANGE.Move.reversible.label", automatable: false },
+  initial: { label: "TOCHANGE.Move.initial.label", automatable: false },
+  environmental: { label: "TOCHANGE.Move.environmental.label", automatable: false },
+  progressive: { label: "TOCHANGE.Move.progressive.label", automatable: false },
+  living: { label: "TOCHANGE.Move.living.label", automatable: false },
+  rules: { label: "TOCHANGE.Move.rules.label", automatable: false },
+  levels: { label: "TOCHANGE.Move.levels.label", automatable: false },
+  healing: { label: "TOCHANGE.Move.healing.label", automatable: false },
+  mirrored: { label: "TOCHANGE.Move.mirrored.label", automatable: false }
 };
 
 /** 預設牌堆名稱 */
