@@ -17,8 +17,9 @@ export class DeckViewer extends Application {
   constructor(options = {}) {
     super(options);
     // 牌堆狀態變動 → 即時刷新（涵蓋占卜結算、重置、自由抽牌等所有寫入）
+    // 用 force:true,避免內部狀態卡在非 RENDERED 時 render 被略過
     this._onSettingUpdate = setting => {
-      if (setting?.key === `${ID}.deckState` && this.rendered) this.render(false);
+      if (setting?.key === `${ID}.deckState` && this.element.length) this.render(true);
     };
     Hooks.on("updateSetting", this._onSettingUpdate);
   }
@@ -71,7 +72,8 @@ export class DeckViewer extends Application {
   /** @override */
   activateListeners(html) {
     super.activateListeners(html);
-    html.find("[data-action=refresh]").on("click", () => this.render());
+    // 重新整理:強制重繪（force:true),確保任何狀態下都會重抓牌堆並刷新
+    html.find("[data-action=refresh]").on("click", () => this.render(true));
   }
 
   /** @override */
