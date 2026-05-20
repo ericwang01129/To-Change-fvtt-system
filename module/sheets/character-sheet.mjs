@@ -49,7 +49,8 @@ export class ToChangeCharacterSheet extends ActorSheet {
         cells: Array.from({ length: a.max }, (_, i) => ({
           index: i,
           changed: i < a.changed,
-          damaged: i < a.damage
+          damaged: i < a.damage,
+          note: sys.crossNotes?.[key]?.[i] ?? ""
         })),
         // 傷害點陣（屬性面板用）
         damagePips: Array.from({ length: a.max }, (_, i) => ({ index: i, on: i < a.damage }))
@@ -65,7 +66,8 @@ export class ToChangeCharacterSheet extends ActorSheet {
         index: i,
         roman: asp.roman,
         label: game.i18n.localize(asp.label),
-        on: !!sys.wheel?.[key]?.[i]
+        on: !!sys.wheel?.[key]?.[i],
+        note: sys.wheelNotes?.[key]?.[i] ?? ""
       }))
     }));
 
@@ -120,11 +122,16 @@ export class ToChangeCharacterSheet extends ActorSheet {
 
     // 輪盤格子
     html.find(".wheel-aspect").on("click", ev => {
+      if (ev.target.tagName === "INPUT") return;   // 點到輸入欄不切換蛻化面向
       const { attr, index } = ev.currentTarget.dataset;
       const arr = foundry.utils.duplicate(this.actor.system.wheel[attr]);
       arr[parseInt(index)] = !arr[parseInt(index)];
       this.actor.update({ [`system.wheel.${attr}`]: arr });
     });
+
+    // 格子內的蛻化內容文字（十字／輪盤）
+    html.find(".cell-note").on("change", ev => this._onNoteChange(ev, "crossNotes"));
+    html.find(".aspect-note").on("change", ev => this._onNoteChange(ev, "wheelNotes"));
 
     // 開啟行動占卜
     html.find("[data-action=resolve]").on("click", ev => {
@@ -151,6 +158,8 @@ export class ToChangeCharacterSheet extends ActorSheet {
    * @param {"changed"|"damage"} layer
    */
   _onCell(ev, layer) {
+    // 點到格子內的輸入欄時不切換蛻化／傷害
+    if (ev.target.tagName === "INPUT") return;
     ev.preventDefault();
     const el = ev.currentTarget;
     const attr = el.dataset.attr;
@@ -164,6 +173,22 @@ export class ToChangeCharacterSheet extends ActorSheet {
     const cur = this.actor.system.attributes[attr][field];
     const next = (cur === i + 1) ? i : i + 1;
     this.actor.update({ [`system.attributes.${attr}.${field}`]: next });
+  }
+
+  /**
+   * 寫入格子內的蛻化內容文字。
+   * @param {Event} ev
+   * @param {"crossNotes"|"wheelNotes"} field  存放欄位
+   */
+  _onNoteChange(ev, field) {
+    const el = ev.currentTarget;
+    const attr = el.dataset.attr;
+    const i = parseInt(el.dataset.index);
+    if (!attr || isNaN(i)) return;
+    const arr = foundry.utils.duplicate(this.actor.system[field]?.[attr] ?? []);
+    while (arr.length <= i) arr.push("");
+    arr[i] = el.value;
+    this.actor.update({ [`system.${field}.${attr}`]: arr });
   }
 
   /** 從 22 張大阿爾克那挑一張作為角色牌 */

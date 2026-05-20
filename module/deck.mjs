@@ -67,6 +67,20 @@ export class Deck {
     return { card, state: { draw: s.draw.slice(0, -1), discard: [...s.discard] } };
   }
 
+  /**
+   * 自牌堆「底部」抽 n 張（自由抽牌用）。
+   * @returns {{cards:number[], state:object}} cards 由最底張起排列
+   */
+  static drawBottomCards(state, n) {
+    const s = this.ensure(state, n);
+    const take = Math.max(0, Math.min(n, s.draw.length));
+    const cards = take ? s.draw.slice(s.draw.length - take).reverse() : [];
+    return {
+      cards,
+      state: { draw: s.draw.slice(0, s.draw.length - take), discard: [...s.discard] }
+    };
+  }
+
   /** 偷看牌堆頂 n 張（太陽);不改動狀態 */
   static peekTop(state, n) {
     return this.ensure(state, n).draw.slice(0, n);

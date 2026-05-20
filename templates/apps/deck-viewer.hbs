@@ -1,0 +1,48 @@
+<div class="deck-viewer-content">
+
+  <div class="dv-summary">
+    <span class="dv-count">
+      <i class="fas fa-layer-group"></i> {{localize "TOCHANGE.DeckViewer.drawPile"}} <b>{{drawCount}}</b>
+    </span>
+    <span class="dv-count">
+      <i class="fas fa-trash-can"></i> {{localize "TOCHANGE.DeckViewer.discardPile"}} <b>{{discardCount}}</b>
+    </span>
+    <button type="button" class="dv-refresh" data-action="refresh"
+            title="{{localize 'TOCHANGE.DeckViewer.refresh'}}">
+      <i class="fas fa-rotate"></i>
+    </button>
+  </div>
+
+  <p class="hint">{{localize "TOCHANGE.DeckViewer.hint"}}</p>
+
+  <h3>{{localize "TOCHANGE.DeckViewer.drawPile"}}
+    <small>{{localize "TOCHANGE.DeckViewer.topFirst"}}</small></h3>
+  {{#if draw.length}}
+  <ol class="dv-list dv-draw">
+    {{#each draw}}
+    <li class="dv-card">
+      <span class="dv-pos">{{this.pos}}</span>
+      <img src="{{this.img}}" alt="{{this.zh}}"/>
+      <span class="dv-name"><b>{{this.roman}}</b> {{this.zh}}<small>{{this.en}}</small></span>
+    </li>
+    {{/each}}
+  </ol>
+  {{else}}
+  <p class="hint">{{localize "TOCHANGE.DeckViewer.emptyDraw"}}</p>
+  {{/if}}
+
+  <h3>{{localize "TOCHANGE.DeckViewer.discardPile"}}</h3>
+  {{#if discard.length}}
+  <ul class="dv-list dv-discard">
+    {{#each discard}}
+    <li class="dv-card">
+      <img src="{{this.img}}" alt="{{this.zh}}"/>
+      <span class="dv-name"><b>{{this.roman}}</b> {{this.zh}}<small>{{this.en}}</small></span>
+    </li>
+    {{/each}}
+  </ul>
+  {{else}}
+  <p class="hint">{{localize "TOCHANGE.DeckViewer.emptyDiscard"}}</p>
+  {{/if}}
+
+</div>

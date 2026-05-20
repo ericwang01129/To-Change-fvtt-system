@@ -15,8 +15,18 @@
     </div>
 
     <div class="assist-row">
-      <label for="tc-assist">{{localize "TOCHANGE.Resolution.assist"}}</label>
-      <input type="number" id="tc-assist" name="assist" value="{{assist}}" min="0" max="6"/>
+      <label>{{localize "TOCHANGE.Resolution.assist"}}</label>
+      <div class="assist-stepper">
+        <button type="button" class="assist-step" data-assist-step="-1"
+                aria-label="−" {{#unless assist}}disabled{{/unless}}>
+          <i class="fas fa-minus"></i>
+        </button>
+        <span class="assist-value">{{assist}}</span>
+        <button type="button" class="assist-step" data-assist-step="1"
+                aria-label="+" {{#if assistAtMax}}disabled{{/if}}>
+          <i class="fas fa-plus"></i>
+        </button>
+      </div>
     </div>
 
     <div class="draw-breakdown">
@@ -26,6 +36,40 @@
       {{#if draw.justice}}<div class="dd justice"><span>{{localize "TOCHANGE.Resolution.justice"}}</span><b>+{{draw.justice}}</b></div>{{/if}}
       <div class="dd total"><span>{{localize "TOCHANGE.Resolution.total"}}</span><b>{{draw.total}}</b></div>
     </div>
+
+    <section class="free-draw">
+      <p class="free-draw-head">
+        <i class="fas fa-hand-sparkles"></i> {{localize "TOCHANGE.Resolution.freeDrawTitle"}}
+      </p>
+      <p class="hint">{{localize "TOCHANGE.Resolution.freeDrawHint"}}</p>
+      <div class="free-draw-row">
+        <div class="free-end">
+          <button type="button" class="free-end-btn {{#if freeTop}}active{{/if}}" data-free-end="top">
+            <i class="fas fa-angles-up"></i> {{localize "TOCHANGE.Resolution.freeTop"}}
+          </button>
+          <button type="button" class="free-end-btn {{#if freeBottom}}active{{/if}}" data-free-end="bottom">
+            <i class="fas fa-angles-down"></i> {{localize "TOCHANGE.Resolution.freeBottom"}}
+          </button>
+        </div>
+        <div class="free-count">
+          <label>{{localize "TOCHANGE.Resolution.freeCount"}}</label>
+          <div class="assist-stepper">
+            <button type="button" class="assist-step" data-free-step="-1"
+                    aria-label="−" {{#if freeCountAtMin}}disabled{{/if}}>
+              <i class="fas fa-minus"></i>
+            </button>
+            <span class="assist-value">{{freeCount}}</span>
+            <button type="button" class="assist-step" data-free-step="1"
+                    aria-label="+" {{#if freeCountAtMax}}disabled{{/if}}>
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
+        </div>
+        <button type="button" class="free-draw-btn" data-action="free-draw">
+          <i class="fas fa-wand-magic-sparkles"></i> {{localize "TOCHANGE.Resolution.freeDraw"}}
+        </button>
+      </div>
+    </section>
 
     <footer class="resolution-actions">
       <button type="button" data-action="draw" {{#unless draw.total}}disabled{{/unless}}>
@@ -67,6 +111,11 @@
     </div>
 
     <footer class="resolution-actions">
+      {{#if isGM}}
+      <button type="button" class="deck-view-btn" data-action="deck-view">
+        <i class="fas fa-eye"></i> {{localize "TOCHANGE.Resolution.deckView"}}
+      </button>
+      {{/if}}
       {{#if canSuccumb}}
       <button type="button" class="succumb" data-action="succumb">
         <i class="fas fa-yin-yang"></i> {{localize "TOCHANGE.Resolution.succumb"}}

@@ -12,6 +12,7 @@ import { ResolutionDialog } from "./module/apps/resolution.mjs";
 import { SoloTracker } from "./module/apps/solo-tracker.mjs";
 import { TableRoller } from "./module/apps/table-roller.mjs";
 import { StoryMovesConfig } from "./module/apps/story-moves-config.mjs";
+import { DeckViewer } from "./module/apps/deck-viewer.mjs";
 
 const ID = TO_CHANGE.ID;
 
@@ -48,11 +49,13 @@ Hooks.once("init", () => {
   // 對外 API
   game.toChange = {
     Deck,
+    DeckViewer,
     ResolutionDialog,
     SoloTracker,
     TableRoller,
     rebuildContent,
-    openTableRoller: () => new TableRoller().render(true)
+    openTableRoller: () => new TableRoller().render(true),
+    openDeckViewer: () => DeckViewer.open()
   };
 
   preloadTemplates();
@@ -91,12 +94,22 @@ Hooks.on("getSceneControlButtons", controls => {
 
   if (game.user.isGM) {
     tools.push({
+      name: "tc-deck-viewer",
+      title: game.i18n.localize("TOCHANGE.DeckViewer.open"),
+      icon: "fas fa-eye",
+      button: true,
+      visible: true,
+      order: 91,
+      onClick: () => DeckViewer.open(),
+      onChange: () => DeckViewer.open()
+    });
+    tools.push({
       name: "tc-deck-reset",
       title: game.i18n.localize("TOCHANGE.Deck.reset"),
       icon: "fas fa-shuffle",
       button: true,
       visible: true,
-      order: 91,
+      order: 92,
       onClick: deckResetPrompt,
       onChange: deckResetPrompt
     });
@@ -128,6 +141,7 @@ function preloadTemplates() {
     "templates/apps/solo-tracker.hbs",
     "templates/apps/table-roller.hbs",
     "templates/apps/story-moves-config.hbs",
+    "templates/apps/deck-viewer.hbs",
     "templates/chat/resolution-result.hbs"
   ].map(p => `systems/${ID}/${p}`);
   return loadTemplates(paths);

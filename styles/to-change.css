@@ -329,7 +329,38 @@
 .resolution .attr-btn .abbr { font-weight: 800; font-size: 1.1rem; }
 .resolution .attr-btn .name { font-size: 0.7rem; }
 .resolution .assist-row { display: flex; gap: 0.5rem; align-items: center; margin: 0.5rem 0; }
-.resolution .assist-row input { width: 60px; }
+.resolution .assist-stepper {
+  display: inline-flex;
+  align-items: stretch;
+  border: 1px solid var(--tc-purple-soft);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.resolution .assist-step {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: var(--tc-lilac);
+  color: var(--tc-purple);
+  cursor: pointer;
+}
+.resolution .assist-step:hover:not(:disabled) { background: var(--tc-pink-soft); }
+.resolution .assist-step:disabled { opacity: 0.35; cursor: default; }
+.resolution .assist-value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.6rem;
+  padding: 0.25rem 0.3rem;
+  background: var(--tc-paper);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--tc-change);
+}
 .resolution .draw-breakdown {
   display: flex; gap: 0.3rem;
   background: var(--tc-lilac);
@@ -476,3 +507,154 @@
   padding: 0.3rem 0.5rem; font-weight: 700;
 }
 .table-chat .tr-cell { padding: 0.15rem 0.5rem; margin: 0; }
+
+/* ==========================================================================
+   自由抽牌（占卜對話框）
+   ========================================================================== */
+.free-draw {
+  border: 1px dashed var(--tc-purple-soft);
+  border-radius: 8px;
+  padding: 0.4rem 0.55rem;
+  margin: 0.55rem 0;
+}
+.free-draw .free-draw-head {
+  font-weight: 800;
+  color: var(--tc-purple);
+  margin: 0 0 0.15rem;
+}
+.free-draw .hint { margin: 0 0 0.4rem; }
+.free-draw-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+.free-end { display: flex; gap: 0.3rem; }
+.free-end-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.55rem;
+  font-size: 0.82rem;
+}
+.free-end-btn.active {
+  background: var(--tc-purple);
+  color: #fff;
+}
+.free-count {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.free-count label { font-size: 0.8rem; color: #6b5c7d; }
+.free-draw-btn {
+  margin-left: auto;
+  padding: 0.32rem 0.75rem;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   牌堆檢視視窗（GM）
+   ========================================================================== */
+.deck-viewer-content { padding: 0.2rem 0.15rem; }
+.dv-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.35rem 0.5rem;
+  background: var(--tc-lilac);
+  border: 1px solid var(--tc-purple-soft);
+  border-radius: 8px;
+  margin-bottom: 0.4rem;
+}
+.dv-count { font-size: 0.86rem; }
+.dv-count b { color: var(--tc-change); font-size: 1.05rem; margin-left: 0.15rem; }
+.dv-summary .dv-refresh {
+  margin-left: auto;
+  width: 30px;
+  height: 28px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.deck-viewer-content h3 small {
+  font-size: 0.68rem;
+  font-weight: 400;
+  font-style: italic;
+  color: #6b5c7d;
+  margin-left: 0.3rem;
+}
+.dv-list {
+  list-style: none;
+  margin: 0.25rem 0 0.7rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.dv-card {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 2px 6px;
+  background: var(--tc-paper);
+  border: 1px solid var(--tc-purple-soft);
+  border-radius: 6px;
+}
+.dv-draw .dv-card:first-child {
+  border-color: var(--tc-change);
+  box-shadow: 0 0 6px rgba(154, 111, 208, 0.4);
+}
+.dv-pos {
+  min-width: 1.7rem;
+  text-align: center;
+  font-weight: 800;
+  font-size: 0.8rem;
+  color: var(--tc-purple);
+}
+.dv-card img {
+  width: 26px;
+  height: 39px;
+  object-fit: cover;
+  border-radius: 3px;
+  border: 1px solid var(--tc-purple-soft);
+  flex: none;
+}
+.dv-name { font-size: 0.82rem; line-height: 1.2; }
+.dv-name b { color: var(--tc-purple); }
+.dv-name small { color: #6b5c7d; margin-left: 0.3rem; }
+
+/* ==========================================================================
+   蛻化十字 / 輪盤 —— 格子內的蛻化內容輸入欄
+   ========================================================================== */
+/* 十字格:小型單行輸入欄貼在格子下緣,上半部仍可點按切換蛻化/傷害 */
+.to-change .cross-cell .cell-note {
+  position: absolute;
+  left: 3px;
+  right: 3px;
+  bottom: 2px;
+  height: 15px;
+  z-index: 2;
+  padding: 0 3px;
+  font-size: 9px;
+  line-height: 1.1;
+  border-radius: 3px;
+  cursor: text;
+}
+/* 輪盤格:輸入欄換到第二行,佔滿整列寬 */
+.to-change .wheel-aspect { flex-wrap: wrap; }
+.to-change .wheel-aspect .aspect-note {
+  flex: 1 0 100%;
+  margin-top: 2px;
+  height: 18px;
+  padding: 0 4px;
+  font-size: 0.66rem;
+  border-radius: 4px;
+  cursor: text;
+}
+.to-change .cell-note::placeholder,
+.to-change .aspect-note::placeholder {
+  color: #b3a6c4;
+  font-style: italic;
+}

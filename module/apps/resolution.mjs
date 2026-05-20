@@ -5,9 +5,13 @@ import { commitDeckState } from "../socket.mjs";
 import {
   computeDraw, resolveCard, checkRiseFall, deathSelectable, settleDeck
 } from "../resolution-engine.mjs";
+import { DeckViewer } from "./deck-viewer.mjs";
 
 const ID = TO_CHANGE.ID;
 const ART = `systems/${ID}/assets/cards`;
+const ASSIST_MAX = 6;   // 援助人數上限（每人 +1 抽牌）
+const FREE_MIN = 1;     // 自由抽牌張數下限
+const FREE_MAX = 3;     // 自由抽牌張數上限
 
 /**
  * 行動占卜對話框。
@@ -20,6 +24,8 @@ export class ResolutionDialog extends Application {
     this.actor = actor;
     this.attrKey = attrKey;
     this.assist = 0;
+    this.freeEnd = "top";     // 自由抽牌:自牌堆頂 / 底
+    this.freeCount = 1;       // 自由抽牌張數
     this.phase = "setup";
     this.drawn = [];          // 翻開的牌
     this.workingState = null; // 抽牌後的牌堆狀態
@@ -69,6 +75,14 @@ export class ResolutionDialog extends Application {
       attrLabel: game.i18n.localize(TO_CHANGE.attributes[this.attrKey].label),
       attrChoices,
       assist: this.assist,
+      assistAtMax: this.assist >= ASSIST_MAX,
+      freeEnd: this.freeEnd,
+      freeTop: this.freeEnd === "top",
+      freeBottom: this.freeEnd === "bottom",
+      freeCount: this.freeCount,
+      freeCountAtMin: this.freeCount <= FREE_MIN,
+      freeCountAtMax: this.freeCount >= FREE_MAX,
+      isGM: game.user.isGM,
       draw,
       canSuccumb,
       drawn: this.drawn.map(num => this._cardView(num)),
@@ -107,10 +121,22 @@ export class ResolutionDialog extends Application {
       this.attrKey = ev.currentTarget.dataset.attr;
       this.render();
     });
-    html.find("[name=assist]").on("change", ev => {
-      this.assist = Math.max(0, parseInt(ev.currentTarget.value) || 0);
+    html.find("[data-assist-step]").on("click", ev => {
+      const delta = parseInt(ev.currentTarget.dataset.assistStep) || 0;
+      this.assist = Math.min(ASSIST_MAX, Math.max(0, this.assist + delta));
       this.render();
     });
+    html.find("[data-free-end]").on("click", ev => {
+      this.freeEnd = ev.currentTarget.dataset.freeEnd;
+      this.render();
+    });
+    html.find("[data-free-step]").on("click", ev => {
+      const delta = parseInt(ev.currentTarget.dataset.freeStep) || 0;
+      this.freeCount = Math.min(FREE_MAX, Math.max(FREE_MIN, this.freeCount + delta));
+      this.render();
+    });
+    html.find("[data-action=free-draw]").on("click", () => this._onFreeDraw());
+    html.find("[data-action=deck-view]").on("click", () => DeckViewer.open());
     html.find("[data-action=draw]").on("click", () => this._onDraw());
     html.find("[data-action=succumb]").on("click", () => this._onSuccumb());
     html.find("[data-action=cancel]").on("click", () => this.close());
@@ -142,7 +168,7 @@ export class ResolutionDialog extends Application {
     const { risingHits, fallingHits } = checkRiseFall(this.drawn, [this.actor]);
 
     for (const hit of fallingHits) {
-      // 墮位:把最先翻開的那張洗回
+      // 墮位:依規則把「本次最先翻開的那一張」洗回牌堆
       if (this.drawn.length) {
         const first = this.drawn.shift();
         this.workingState = Deck.shuffleIntoDraw(this.workingState, [first]);
@@ -163,6 +189,33 @@ export class ResolutionDialog extends Application {
     if (this.usedTowerBonus > 0) {
       await this.actor.unsetFlag(ID, "nextDrawBonus");
     }
+
+    this.phase = "reveal";
+    this.render();
+  }
+
+  /**
+   * 自由抽牌:不套用占卜規則,自牌堆頂或底抽 1–3 張。
+   * 跳過昇位/墮位/高塔/正義加減牌;翻牌後照常選命運或蛻變。
+   */
+  async _onFreeDraw() {
+    const n = Math.min(FREE_MAX, Math.max(FREE_MIN, this.freeCount));
+    this.snapshot = this._pendingState ?? Deck.state;
+    this._pendingState = null;
+
+    const res = this.freeEnd === "bottom"
+      ? Deck.drawBottomCards(this.snapshot, n)
+      : Deck.drawTop(this.snapshot, n);
+
+    this.drawn = res.cards;
+    this.workingState = res.state;
+    this.usedTowerBonus = 0;
+    this.triggers = [game.i18n.format("TOCHANGE.Resolution.freeDrawTrigger", {
+      count: this.drawn.length,
+      end: game.i18n.localize(this.freeEnd === "bottom"
+        ? "TOCHANGE.Resolution.freeBottom"
+        : "TOCHANGE.Resolution.freeTop")
+    })];
 
     this.phase = "reveal";
     this.render();

@@ -23,6 +23,18 @@
         "pf": [false, false, false],
         "mf": [false, false, false]
       },
+      "crossNotes": {
+        "mf": ["", "", ""],
+        "ma": ["", "", ""],
+        "pf": ["", "", ""],
+        "pa": ["", "", ""]
+      },
+      "wheelNotes": {
+        "mf": ["", "", ""],
+        "ma": ["", "", ""],
+        "pf": ["", "", ""],
+        "pa": ["", "", ""]
+      },
       "cards": {
         "face": null,
         "rising": null,

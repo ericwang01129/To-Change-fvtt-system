@@ -1,0 +1,1406 @@
+/* =============================================================
+   To Change 蛻化 — ARCANA UI
+   《To Change》Foundry VTT 系統的整套 UI 主題覆蓋。
+   靈感取自原書封面與「蛻化十字／跨性別蛻化輪盤」插圖:
+   羊皮紙底、柔和粉桃粉紫、塔羅占卜墊質感、金色描邊,
+   以及封面那幾道紅色「命運絲線」。
+
+   本檔為 to-change.css 之上的視覺皮層 (skin) —— 只重塑
+   配色、邊框、光暈、字體與框飾,不更動原本的格線排版。
+   載入順序需在 to-change.css 之後。
+   ============================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@500;700;900&display=swap');
+
+/* ---------- 設計變數 / Design tokens ---------- */
+:root {
+  /* 底材 — parchment & vellum */
+  --tc-paper:        #fbf6fb;
+  --tc-paper-2:      #f1e6f1;
+  --tc-vellum:       #f6edf6;
+  --tc-lilac:        #ece4f4;
+  --tc-lilac-2:      #e2d6ef;
+  --tc-mist:         #f3dcea;
+
+  /* 線條 — borders */
+  --tc-line:         #ddccea;
+  --tc-line-strong:  #b79fce;
+
+  /* 主色 — arcana purples & pinks */
+  --tc-purple:       #8a5cc4;
+  --tc-purple-deep:  #6f4f96;
+  --tc-purple-ink:   #3a2b4d;
+  --tc-change:       #9a6fd0;
+  --tc-pink:         #e6b9d4;
+  --tc-pink-soft:    #f3dcea;
+  --tc-rose:         #d98fb8;
+
+  /* 點綴 — gilt & 命運絲線 fate-thread */
+  --tc-gold:         #c9a14a;
+  --tc-gold-soft:    #e6cf95;
+  --tc-damage:       #c0445a;
+  --tc-damage-soft:  #e58a9a;
+
+  /* 文字 */
+  --tc-text:         #3a2b4d;
+  --tc-text-dim:     #6b5c7d;
+  --tc-text-faint:   #9a8caa;
+
+  /* 光暈 */
+  --tc-glow-purple:  0 0 0 1px rgba(138,92,196,.30), 0 0 12px rgba(154,111,208,.28);
+  --tc-glow-gold:    0 0 0 1px rgba(201,161,74,.45), 0 0 12px rgba(201,161,74,.35);
+  --tc-glow-soft:    0 6px 18px rgba(111,79,150,.16);
+
+  /* 封面那束中央光 —— window 頂端的柔光暈 */
+  --tc-halo:
+    radial-gradient(620px 210px at 50% -56px, rgba(255,255,255,.95), transparent 72%),
+    radial-gradient(900px 440px at 50% -150px, rgba(230,169,208,.30), transparent 64%);
+
+  /* 字體 */
+  --tc-font:         "Noto Sans TC","Microsoft JhengHei","PingFang TC","Segoe UI",sans-serif;
+  --tc-font-display: "Cinzel","Noto Serif TC","Microsoft JhengHei",serif;
+  --tc-font-script:  "Cormorant Garamond","Noto Serif TC",serif;
+}
+
+/* =============================================================
+   0. 字體套用 / Font application — 僅限 To Change 介面
+   ============================================================= */
+
+body.system-to-change,
+body.system-to-change .app,
+body.system-to-change #sidebar,
+body.system-to-change #chat-log,
+body.system-to-change #players,
+body.system-to-change #ui-left,
+.to-change,
+.to-change input,
+.to-change select,
+.to-change textarea,
+.to-change button,
+.to-change label,
+.to-change .window-content {
+  font-family: var(--tc-font);
+  letter-spacing: .01em;
+}
+
+/* 標題字 — Cinzel 雕版體,塔羅牌名的氣質 */
+.to-change .window-header .window-title,
+.to-change h3,
+.to-change .block-label,
+.to-change .sheet-tabs .item,
+.to-change .attr-abbr,
+.to-change .branch-label,
+.to-change .quad-label,
+.to-change .cs-head,
+.to-change .perm-label,
+.chat-message .rc-result,
+body.system-to-change .app.window-app .window-header .window-title {
+  font-family: var(--tc-font-display);
+  letter-spacing: .08em;
+}
+
+/* 韻味字 — Cormorant 斜體,提示與旁白 */
+.to-change .hint,
+.to-change .panel-hint,
+.to-change .perm-tag,
+.to-change .concept,
+.to-change .cs-ability.empty,
+.to-change .tr-desc,
+.to-change .ssc-prompt,
+.solo-event .se-prompt {
+  font-family: var(--tc-font-script);
+  font-style: italic;
+}
+
+/* =============================================================
+   1. 視窗外框 / Sheet frame (角色卡、應用程式、對話框)
+   ============================================================= */
+
+.app.window-app.to-change,
+.app.window-app.to-change.sheet,
+.to-change.dialog {
+  color: var(--tc-text);
+}
+
+.window-app.to-change .window-content,
+.to-change .window-content {
+  background:
+    var(--tc-halo),
+    linear-gradient(180deg, var(--tc-paper) 0%, var(--tc-paper-2) 100%);
+  color: var(--tc-text);
+  border: 1px solid var(--tc-line-strong);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.65),
+    inset 0 0 42px rgba(230,169,208,.14);
+  position: relative;
+}
+
+/* 極淡的星塵 / 命運光點 —— 呼應封面漂浮的微光 */
+.to-change .window-content::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(1.6px 1.6px at 14% 22%, rgba(154,111,208,.55), transparent),
+    radial-gradient(1.6px 1.6px at 82% 16%, rgba(230,169,208,.6), transparent),
+    radial-gradient(1.4px 1.4px at 33% 64%, rgba(154,111,208,.4), transparent),
+    radial-gradient(1.8px 1.8px at 68% 78%, rgba(201,161,74,.45), transparent),
+    radial-gradient(1.3px 1.3px at 91% 54%, rgba(154,111,208,.4), transparent),
+    radial-gradient(1.5px 1.5px at 8% 84%, rgba(230,169,208,.5), transparent);
+  opacity: .7;
+}
+
+.to-change .window-content > * { position: relative; z-index: 1; }
+
+/* 角色卡的表單本體 —— 設透明,讓外框漸層透出 */
+.to-change .to-change-sheet,
+.to-change .window-content > form,
+.to-change .window-content > section {
+  background: transparent !important;
+}
+
+/* 視窗標頭 —— 粉桃→丁香→草紫 的柔光帶 */
+.window-app.to-change .window-header,
+.to-change .window-header,
+body.system-to-change .app.window-app .window-header {
+  background:
+    linear-gradient(90deg,
+      rgba(230,169,208,.55) 0%,
+      rgba(246,237,246,.96) 38%,
+      rgba(246,237,246,.96) 62%,
+      rgba(183,159,206,.55) 100%);
+  border-bottom: 2px solid var(--tc-gold);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.8),
+    0 4px 14px rgba(111,79,150,.14);
+  color: var(--tc-purple-deep);
+}
+
+.to-change .window-header .window-title,
+body.system-to-change .app.window-app .window-header .window-title {
+  color: var(--tc-purple-deep);
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(255,255,255,.9);
+}
+
+.to-change .window-header a,
+body.system-to-change .app.window-app .window-header a {
+  color: var(--tc-purple);
+}
+.to-change .window-header a:hover,
+body.system-to-change .app.window-app .window-header a:hover {
+  color: var(--tc-damage);
+  text-shadow: 0 0 8px rgba(192,68,90,.4);
+}
+
+.to-change .window-resizable-handle {
+  background: linear-gradient(135deg, transparent 50%, var(--tc-gold) 50%);
+  opacity: .7;
+}
+
+/* 標題 h3 —— 塔羅式小標,底線是一道金色細描 */
+.to-change h3 {
+  color: var(--tc-purple-deep);
+  font-weight: 700;
+  border-bottom: none;
+  padding-bottom: 3px;
+  position: relative;
+}
+.to-change h3::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 100%; height: 2px;
+  background: linear-gradient(90deg,
+    var(--tc-gold) 0%, var(--tc-pink) 45%, transparent 100%);
+  box-shadow: 0 1px 4px rgba(201,161,74,.3);
+}
+
+.to-change .hint,
+.to-change .panel-hint {
+  color: var(--tc-text-dim);
+}
+
+/* =============================================================
+   2. 表單元件 / Form controls (input, select, textarea, button)
+   ============================================================= */
+
+.to-change input[type="text"],
+.to-change input[type="number"],
+.to-change input[type="password"],
+.to-change textarea,
+.to-change select {
+  background: rgba(255,255,255,.85);
+  color: var(--tc-text);
+  border: 1px solid var(--tc-line-strong);
+  border-radius: 6px;
+  box-shadow:
+    inset 0 1px 3px rgba(111,79,150,.12),
+    inset 0 0 0 1px rgba(255,255,255,.5);
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.to-change input[type="text"]:focus,
+.to-change input[type="number"]:focus,
+.to-change textarea:focus,
+.to-change select:focus {
+  outline: none;
+  border-color: var(--tc-purple);
+  box-shadow:
+    0 0 0 3px rgba(154,111,208,.22),
+    0 0 10px rgba(154,111,208,.25);
+}
+
+.to-change input:disabled,
+.to-change textarea:disabled {
+  color: var(--tc-text-faint);
+  background: rgba(236,228,244,.6);
+}
+
+.to-change select option { background: var(--tc-paper); color: var(--tc-text); }
+
+.to-change .concept { color: var(--tc-purple-deep); }
+
+/* 按鈕 —— 丁香→粉桃 漸層,金邊塔羅鈕 */
+.to-change button {
+  background: linear-gradient(180deg, var(--tc-vellum), var(--tc-lilac));
+  border: 1px solid var(--tc-line-strong);
+  border-radius: 7px;
+  color: var(--tc-purple-deep);
+  font-family: var(--tc-font);
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.8),
+    0 1px 3px rgba(111,79,150,.14);
+  transition: background .15s ease, border-color .15s ease,
+              box-shadow .15s ease, transform .1s ease;
+}
+.to-change button:hover {
+  background: linear-gradient(180deg, var(--tc-pink-soft), var(--tc-mist));
+  border-color: var(--tc-gold);
+  color: var(--tc-purple);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.85),
+    0 0 10px rgba(201,161,74,.3);
+}
+.to-change button:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 1px 4px rgba(111,79,150,.25);
+}
+
+/* 主行動鈕 —— 草紫實心,白字,金光暈 */
+.to-change button.big-btn {
+  background: linear-gradient(180deg, var(--tc-purple), var(--tc-purple-deep));
+  color: #fff;
+  border-color: var(--tc-purple-deep);
+  text-shadow: 0 1px 3px rgba(58,43,77,.5);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.3),
+    0 2px 10px rgba(111,79,150,.35);
+}
+.to-change button.big-btn:hover {
+  background: linear-gradient(180deg, var(--tc-change), var(--tc-purple));
+  color: #fff;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.35),
+    0 0 16px rgba(201,161,74,.5);
+}
+
+.to-change .block-label {
+  color: var(--tc-purple-deep);
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+
+/* 命運絲線分隔 —— 呼應封面那幾道紅線 */
+.to-change hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--tc-damage), transparent);
+  box-shadow: 0 0 6px rgba(192,68,90,.35);
+  margin: 8px 0;
+}
+
+/* =============================================================
+   3. 角色卡標頭 / Actor sheet header (.tc-header)
+   ============================================================= */
+
+.to-change-sheet .tc-header {
+  border-bottom: 2px solid var(--tc-gold);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.6), transparent);
+  border-radius: 8px 8px 0 0;
+  padding: .5rem .4rem;
+}
+
+.tc-header .tc-id input[name="name"] {
+  font-family: var(--tc-font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--tc-purple-deep);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid transparent;
+  border-radius: 0;
+  box-shadow: none;
+}
+.tc-header .tc-id input[name="name"]:focus {
+  border-bottom-color: var(--tc-gold);
+  box-shadow: 0 2px 8px rgba(201,161,74,.25);
+}
+
+.tc-header .tc-id input.concept {
+  background: transparent;
+  border: none;
+  border-bottom: 1px dashed var(--tc-line-strong);
+  border-radius: 0;
+  box-shadow: none;
+  color: var(--tc-text-dim);
+  font-size: .92rem;
+}
+
+.tc-header .tc-meta label { color: var(--tc-text-dim); }
+.tc-header .dead-flag {
+  color: var(--tc-damage);
+  font-weight: 700;
+  text-shadow: 0 0 6px rgba(192,68,90,.25);
+}
+
+/* =============================================================
+   4. 分頁標籤 / Tabs (.sheet-tabs / nav.tabs)
+   ============================================================= */
+
+.to-change .sheet-tabs,
+.to-change nav.tabs {
+  border-bottom: 2px solid var(--tc-gold);
+  box-shadow: 0 1px 0 rgba(201,161,74,.25);
+  gap: 2px;
+}
+
+.to-change .sheet-tabs .item {
+  background: linear-gradient(180deg, var(--tc-vellum), var(--tc-lilac));
+  color: var(--tc-text-dim);
+  border: 1px solid var(--tc-line-strong);
+  border-bottom: none;
+  border-radius: 9px 9px 0 0;
+  padding: .32rem .8rem;
+  font-weight: 600;
+  font-size: .84rem;
+  letter-spacing: .06em;
+  transition: all .15s ease;
+}
+.to-change .sheet-tabs .item i {
+  color: var(--tc-rose);
+  margin-right: .2rem;
+}
+.to-change .sheet-tabs .item:hover {
+  color: var(--tc-purple);
+  background: linear-gradient(180deg, var(--tc-pink-soft), var(--tc-vellum));
+}
+.to-change .sheet-tabs .item.active {
+  background: linear-gradient(180deg, #fff, var(--tc-mist));
+  color: var(--tc-purple-deep);
+  border-color: var(--tc-gold);
+  box-shadow:
+    inset 0 2px 0 var(--tc-gold-soft),
+    0 -2px 8px rgba(201,161,74,.2);
+}
+.to-change .sheet-tabs .item.active i { color: var(--tc-purple); }
+
+/* =============================================================
+   5. 屬性面板 / Attribute strip (.attr-strip / .attr-cell)
+   ============================================================= */
+
+.to-change .attr-cell {
+  background: var(--tc-vellum);
+  border: 1px solid var(--tc-line-strong);
+  border-radius: 12px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.8),
+    var(--tc-glow-soft);
+  position: relative;
+}
+.to-change .attr-cell::before {
+  content: "";
+  position: absolute;
+  inset: 1px 1px auto 1px;
+  height: 3px;
+  border-radius: 11px 11px 0 0;
+  background: linear-gradient(90deg, var(--tc-gold-soft), var(--tc-pink), var(--tc-purple-soft, var(--tc-line-strong)));
+}
+.to-change .attr-cell.axis-physical {
+  background: linear-gradient(180deg, #f7dcec, #efe3f4);
+}
+.to-change .attr-cell.axis-mental {
+  background: linear-gradient(180deg, #e3dbf4, #efe3f4);
+}
+
+.to-change .attr-cell .attr-abbr {
+  color: var(--tc-purple-deep);
+  font-weight: 800;
+  text-shadow: 0 0 8px rgba(255,255,255,.8);
+}
+.to-change .attr-cell .attr-name { color: var(--tc-text-dim); }
+
+.to-change .attr-cell .attr-draw .num {
+  font-family: var(--tc-font-display);
+  font-weight: 900;
+  color: var(--tc-change);
+  text-shadow: 0 0 12px rgba(154,111,208,.4);
+}
+.to-change .attr-cell .attr-draw .lbl { color: var(--tc-text-faint); }
+
+/* 傷害圓點 —— 命運紅 */
+.to-change .damage-pip {
+  border: 2px solid var(--tc-damage);
+  background: rgba(255,255,255,.7);
+  box-shadow: inset 0 1px 2px rgba(111,79,150,.15);
+  transition: background .12s ease, box-shadow .12s ease;
+}
+.to-change .damage-pip:hover { box-shadow: 0 0 6px rgba(192,68,90,.5); }
+.to-change .damage-pip.on {
+  background: radial-gradient(circle at 35% 30%, var(--tc-damage-soft), var(--tc-damage));
+  box-shadow: 0 0 7px rgba(192,68,90,.55);
+}
+
+/* =============================================================
+   6. 蛻化十字 / Change cross (.change-panel / .cross-cell / .permanence)
+   ============================================================= */
+
+.to-change .change-panel {
+  background: rgba(255,255,255,.55);
+  border: 1px solid var(--tc-line-strong);
+  border-radius: 12px;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.6),
+    var(--tc-glow-soft);
+}
+
+/* 占卜墊質感 —— 給十字／輪盤插圖一個柔邊內框 */
+.to-change .change-cross,
+.to-change .change-wheel {
+  border-radius: 10px;
+  box-shadow: inset 0 0 38px rgba(183,159,206,.18);
+}
+
+.to-change .branch-label {
+  font-weight: 800;
+  color: var(--tc-purple-deep);
+  background: #fff;
+  border: 1px solid var(--tc-line-strong);
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(111,79,150,.18);
+}
+
+.to-change .cross-cell {
+  border: 2px solid var(--tc-line-strong);
+  background: rgba(255,255,255,.9);
+  box-shadow: inset 0 1px 3px rgba(111,79,150,.1);
+}
+.to-change .cross-cell:hover {
+  box-shadow: 0 0 9px rgba(154,111,208,.6);
+  border-color: var(--tc-change);
+}
+/* 已蛻化 —— 草紫→粉桃 漸層 + 柔光 */
+.to-change .cross-cell.changed {
+  background: linear-gradient(135deg, var(--tc-change), var(--tc-pink));
+  border-color: var(--tc-change);
+  box-shadow:
+    0 0 10px rgba(154,111,208,.45),
+    inset 0 0 6px rgba(255,255,255,.4);
+}
+/* 受損 —— 紅色斜紋 */
+.to-change .cross-cell.damaged { border-color: var(--tc-damage); }
+.to-change .cross-cell.damaged::after {
+  background: repeating-linear-gradient(45deg,
+    transparent, transparent 7px,
+    rgba(192,68,90,.6) 7px, rgba(192,68,90,.6) 13px);
+}
+
+/* 永恆之點 —— 「no going back」中央節點 */
+.to-change .permanence {
+  background: radial-gradient(circle at 50% 38%, #fff, var(--tc-pink-soft));
+  border: 3px solid var(--tc-purple);
+  border-radius: 14px;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.7),
+    0 0 14px rgba(154,111,208,.3);
+}
+.to-change .permanence .perm-label {
+  font-weight: 800;
+  color: var(--tc-purple-deep);
+}
+.to-change .permanence .perm-tag { color: var(--tc-text-dim); }
+.to-change .permanence.changed {
+  background: radial-gradient(circle at 50% 38%, var(--tc-change), var(--tc-purple-deep));
+  border-color: var(--tc-gold);
+  color: #fff;
+  animation: tc-pulse 3s ease-in-out infinite;
+}
+.to-change .permanence.changed .perm-label,
+.to-change .permanence.changed .perm-tag { color: #fff; }
+.to-change .permanence.damaged {
+  box-shadow:
+    0 0 0 3px var(--tc-damage),
+    0 0 14px rgba(192,68,90,.5);
+}
+
+/* =============================================================
+   7. 跨性別蛻化輪盤 / Change wheel (.quad / .wheel-aspect / .wheel-center)
+   ============================================================= */
+
+.to-change .quad {
+  background: rgba(255,255,255,.86);
+  border: 1px solid var(--tc-line-strong);
+  border-radius: 10px;
+  box-shadow: var(--tc-glow-soft);
+}
+.to-change .quad-label {
+  font-weight: 800;
+  color: var(--tc-purple-deep);
+}
+
+.to-change .wheel-aspect {
+  border: 1px solid var(--tc-line);
+  background: #fff;
+  border-radius: 8px;
+  transition: background .12s ease, border-color .12s ease;
+}
+.to-change .wheel-aspect:hover {
+  background: var(--tc-pink-soft);
+  border-color: var(--tc-rose);
+}
+.to-change .wheel-aspect.on {
+  background: linear-gradient(135deg, var(--tc-change), var(--tc-pink));
+  color: #fff;
+  border-color: var(--tc-change);
+  box-shadow: 0 0 8px rgba(154,111,208,.45);
+}
+.to-change .wheel-aspect .wa-roman {
+  font-family: var(--tc-font-display);
+  font-weight: 800;
+  color: var(--tc-purple-deep);
+}
+.to-change .wheel-aspect.on .wa-roman { color: #fff; }
+
+.to-change .wheel-center .perm-toggle {
+  border: 3px solid var(--tc-purple);
+  background: radial-gradient(circle at 50% 38%, #fff, var(--tc-pink-soft));
+  color: var(--tc-purple-deep);
+  font-weight: 700;
+  box-shadow: 0 0 14px rgba(154,111,208,.3);
+}
+.to-change .wheel-center .perm-toggle.changed {
+  background: radial-gradient(circle at 50% 38%, var(--tc-change), var(--tc-purple-deep));
+  color: #fff;
+  border-color: var(--tc-gold);
+  animation: tc-pulse 3s ease-in-out infinite;
+}
+
+/* =============================================================
+   8. 角色牌 / Character cards (.cards-panel / .card-slot)
+   ============================================================= */
+
+.to-change .card-slot {
+  background: var(--tc-vellum);
+  border: 1px solid var(--tc-line-strong);
+  border-radius: 10px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.8),
+    var(--tc-glow-soft);
+}
+.to-change .card-slot .cs-head {
+  color: var(--tc-purple-deep);
+  font-weight: 800;
+  letter-spacing: .06em;
+}
+
+/* 塔羅卡圖 —— 金色雙描邊 */
+.to-change .card-slot .cs-art img {
+  border: 2px solid var(--tc-gold);
+  border-radius: 8px;
+  box-shadow:
+    0 0 0 1px var(--tc-line-strong),
+    0 3px 10px rgba(111,79,150,.25);
+  transition: box-shadow .15s ease, transform .12s ease;
+}
+.to-change .card-slot .cs-art:hover img {
+  border-color: var(--tc-gold);
+  box-shadow:
+    0 0 0 1px var(--tc-gold),
+    0 0 16px rgba(201,161,74,.5);
+  transform: translateY(-2px);
+}
+.to-change .card-slot .cs-name {
+  font-family: var(--tc-font-display);
+  color: var(--tc-purple-deep);
+  font-weight: 700;
+}
+.to-change .card-slot .cs-ability { color: var(--tc-text-dim); }
+.to-change .card-slot .cs-ability.empty { color: var(--tc-text-faint); }
+
+.to-change .card-slot .cs-clear {
+  background: rgba(255,255,255,.9);
+  border: 1px solid var(--tc-damage);
+  color: var(--tc-damage);
+  box-shadow: 0 1px 4px rgba(192,68,90,.3);
+}
+.to-change .card-slot .cs-clear:hover {
+  background: var(--tc-damage);
+  color: #fff;
+}
+
+/* =============================================================
+   9. 蛻化記錄 / 安全 / 單人 分頁
+   ============================================================= */
+
+.to-change .total-box {
+  background: var(--tc-vellum);
+  border: 1px solid var(--tc-line-strong);
+  border-radius: 10px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.8);
+}
+.to-change .total-box span { color: var(--tc-text-faint); }
+.to-change .total-box b {
+  font-family: var(--tc-font-display);
+  font-weight: 900;
+  color: var(--tc-change);
+  text-shadow: 0 0 10px rgba(154,111,208,.35);
+}
+
+.to-change .death-warn {
+  background: linear-gradient(180deg, #fbe4e8, #f6d6dc);
+  border: 1px solid var(--tc-damage);
+  color: var(--tc-damage);
+  border-radius: 8px;
+  font-weight: 700;
+  box-shadow: 0 0 12px rgba(192,68,90,.25);
+  animation: tc-pulse-red 2.6s ease-in-out infinite;
+}
+
+.to-change .moves-list { color: var(--tc-text-dim); }
+.to-change .moves-list li { margin-bottom: .15rem; }
+.to-change .moves-list li::marker { color: var(--tc-rose); }
+
+.to-change .tier-row label { color: var(--tc-text-dim); }
+
+/* =============================================================
+   10. 行動占卜對話框 / Resolution dialog
+   ============================================================= */
+
+.resolution .attr-btn {
+  background: linear-gradient(180deg, var(--tc-vellum), var(--tc-lilac));
+  border: 1px solid var(--tc-line-strong);
+  border-radius: 8px;
+}
+.resolution .attr-btn .abbr {
+  font-family: var(--tc-font-display);
+  color: var(--tc-purple-deep);
+}
+.resolution .attr-btn .name { color: var(--tc-text-dim); }
+.resolution .attr-btn.active {
+  background: linear-gradient(180deg, var(--tc-purple), var(--tc-purple-deep));
+  color: #fff;
+  border-color: var(--tc-gold);
+  box-shadow: 0 0 12px rgba(154,111,208,.4);
+}
+.resolution .attr-btn.active .abbr,
+.resolution .attr-btn.active .name { color: #fff; }
+
+/* 援助人數 ± 選擇器 */
+.resolution .assist-stepper {
+  border: 1px solid var(--tc-line-strong);
+  border-radius: 9px;
+  box-shadow: var(--tc-glow-soft);
+}
+.resolution .assist-step {
+  background: linear-gradient(180deg, var(--tc-vellum), var(--tc-lilac));
+  color: var(--tc-purple-deep);
+  transition: background .15s ease, color .15s ease;
+}
+.resolution .assist-step:hover:not(:disabled) {
+  background: linear-gradient(180deg, var(--tc-pink-soft), var(--tc-mist));
+  color: var(--tc-purple);
+}
+.resolution .assist-value {
+  background: rgba(255,255,255,.85);
+  font-family: var(--tc-font-display);
+  color: var(--tc-change);
+  text-shadow: 0 0 10px rgba(154,111,208,.3);
+}
+
+.resolution .draw-breakdown {
+  background: var(--tc-lilac);
+  border: 1px solid var(--tc-line-strong);
+  border-radius: 10px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
+}
+.resolution .dd { color: var(--tc-text-dim); }
+.resolution .dd b {
+  font-family: var(--tc-font-display);
+  color: var(--tc-purple-deep);
+}
+.resolution .dd.total b { color: var(--tc-change); }
+.resolution .dd.tower b {
+  color: var(--tc-damage);
+  text-shadow: 0 0 8px rgba(192,68,90,.35);
+}
+
+.resolution .resolution-actions .succumb {
+  background: linear-gradient(180deg, var(--tc-pink), var(--tc-rose));
+  color: #fff;
+  border-color: var(--tc-rose);
+}
+
+.resolution .trigger-note {
+  background: linear-gradient(180deg, #fff6da, #fdeec2);
+  border-left: 3px solid var(--tc-gold);
+  border-radius: 0 6px 6px 0;
+  color: #7a5a14;
+}
+
+/* 翻開的命運牌 */
+.future-card {
+  border: 2px solid var(--tc-gold);
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(111,79,150,.2);
+}
+.future-card:hover {
+  box-shadow:
+    0 0 0 1px var(--tc-gold),
+    0 6px 16px rgba(201,161,74,.5);
+}
+.future-card.locked { filter: grayscale(.6) opacity(.55); }
+.future-card .card-cap {
+  background: linear-gradient(90deg, var(--tc-purple), var(--tc-purple-deep));
+  color: #fff;
+  font-family: var(--tc-font-display);
+}
+.future-card .card-effect { color: var(--tc-text-dim); }
+.future-card .card-lock { color: var(--tc-damage); }
+
+/* =============================================================
+   11. 單人遊玩面板 / Solo tracker
+   ============================================================= */
+
+.solo-start-card img {
+  border: 2px solid var(--tc-gold);
+  border-radius: 8px;
+  box-shadow:
+    0 0 0 1px var(--tc-line-strong),
+    0 3px 10px rgba(111,79,150,.25);
+}
+.solo-start-card .ssc-body h3 small { color: var(--tc-text-faint); }
+.solo-start-card .ssc-rule { color: var(--tc-text-dim); }
+.solo-start-card .ssc-threshold {
+  color: var(--tc-purple-deep);
+  font-weight: 700;
+}
+.solo-journal textarea { width: 100%; }
+
+/* =============================================================
+   12. 隨機表格擲表器 / Table roller
+   ============================================================= */
+
+.table-roller-form .tr-desc { color: var(--tc-text-dim); }
+.tr-result {
+  background: var(--tc-lilac);
+  border: 1px solid var(--tc-line-strong);
+  border-radius: 10px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
+}
+.tr-result header {
+  font-family: var(--tc-font-display);
+  color: var(--tc-purple-deep);
+  font-weight: 800;
+}
+.tr-row { border-top: 1px dashed var(--tc-line-strong); }
+.tr-row .tr-col {
+  color: var(--tc-purple-deep);
+  font-weight: 700;
+}
+
+/* =============================================================
+   13. 故事動作設定 / Story moves config
+   ============================================================= */
+
+.story-moves-form .move-name {
+  color: var(--tc-purple-deep);
+  font-weight: 700;
+}
+.story-moves-form .move-hint { color: var(--tc-text-dim); }
+
+/* =============================================================
+   14. 聊天卡 / Chat cards
+   ============================================================= */
+
+.to-change.resolution-chat,
+.to-change.solo-event,
+.to-change.table-chat {
+  border: 1px solid var(--tc-gold);
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(111,79,150,.2);
+  background: var(--tc-paper);
+}
+
+/* 行動占卜結果 */
+.resolution-chat .rc-header {
+  background: linear-gradient(90deg, var(--tc-purple), var(--tc-purple-deep));
+  color: #fff;
+}
+.resolution-chat .rc-header.fail {
+  background: linear-gradient(90deg, var(--tc-damage), #8f2f40);
+}
+.resolution-chat .rc-result {
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-shadow: 0 1px 3px rgba(0,0,0,.35);
+}
+.resolution-chat .rc-succumb { color: var(--tc-purple-deep); font-weight: 700; }
+.resolution-chat .rc-card { opacity: .6; }
+.resolution-chat .rc-card.chosen {
+  opacity: 1;
+  outline: 3px solid var(--tc-gold);
+  border-radius: 6px;
+  box-shadow: 0 0 12px rgba(201,161,74,.55);
+}
+.resolution-chat .rc-card img { border-radius: 4px; }
+.resolution-chat .rc-card-name { color: var(--tc-text-dim); }
+.resolution-chat .rc-note { color: var(--tc-purple-deep); }
+
+/* 單人每日事件 */
+.solo-event .se-header {
+  background: linear-gradient(90deg, var(--tc-purple), var(--tc-purple-deep));
+  color: #fff;
+  font-weight: 700;
+}
+.solo-event .se-header.reversed {
+  background: linear-gradient(90deg, var(--tc-purple-deep), #4a3568);
+}
+.solo-event .se-polarity.reversed { color: var(--tc-pink); }
+.solo-event .se-card { color: var(--tc-purple-deep); font-weight: 700; }
+.solo-event .se-event { background: var(--tc-vellum); }
+.solo-event .se-prompt { color: var(--tc-text-dim); }
+
+/* 表格擲表聊天卡 */
+.table-chat .tc-table-head {
+  background: linear-gradient(90deg, var(--tc-purple), var(--tc-purple-deep));
+  color: #fff;
+  font-weight: 700;
+}
+
+/* =============================================================
+   15. 核取方塊 / Checkboxes
+   ============================================================= */
+
+.to-change input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--tc-line-strong);
+  border-radius: 5px;
+  background: rgba(255,255,255,.9);
+  position: relative;
+  cursor: pointer;
+  box-shadow: inset 0 1px 3px rgba(111,79,150,.15);
+  transition: all .15s ease;
+  vertical-align: middle;
+}
+.to-change input[type="checkbox"]:hover {
+  border-color: var(--tc-purple);
+  box-shadow: 0 0 7px rgba(154,111,208,.4);
+}
+.to-change input[type="checkbox"]:checked {
+  background: linear-gradient(135deg, var(--tc-change), var(--tc-purple-deep));
+  border-color: var(--tc-gold);
+  box-shadow: 0 0 9px rgba(154,111,208,.45);
+}
+.to-change input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  left: 5px; top: 1px;
+  width: 5px; height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* =============================================================
+   16. 編輯器與捲軸 / Editor & scrollbars
+   ============================================================= */
+
+.to-change .editor,
+.to-change .editor-content {
+  background: rgba(255,255,255,.8);
+  border: 1px solid var(--tc-line-strong);
+  border-radius: 6px;
+  color: var(--tc-text);
+}
+.to-change .editor-content p,
+.to-change .editor-content li { color: var(--tc-text); }
+.to-change .editor a { color: var(--tc-purple); }
+
+.to-change .window-content::-webkit-scrollbar,
+.to-change *::-webkit-scrollbar { width: 11px; height: 11px; }
+.to-change .window-content::-webkit-scrollbar-track,
+.to-change *::-webkit-scrollbar-track {
+  background: var(--tc-lilac);
+  border-radius: 6px;
+}
+.to-change .window-content::-webkit-scrollbar-thumb,
+.to-change *::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--tc-purple), var(--tc-rose));
+  border: 2px solid var(--tc-lilac);
+  border-radius: 6px;
+}
+.to-change .window-content::-webkit-scrollbar-thumb:hover,
+.to-change *::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--tc-change), var(--tc-pink));
+}
+
+/* =============================================================
+   17. 動畫 / Keyframes
+   ============================================================= */
+
+@keyframes tc-pulse {
+  0%, 100% { box-shadow: 0 0 0 1px rgba(255,255,255,.7), 0 0 12px rgba(154,111,208,.3); }
+  50%      { box-shadow: 0 0 0 1px rgba(255,255,255,.85), 0 0 22px rgba(201,161,74,.55); }
+}
+@keyframes tc-pulse-red {
+  0%, 100% { box-shadow: 0 0 10px rgba(192,68,90,.2); }
+  50%      { box-shadow: 0 0 18px rgba(192,68,90,.45); }
+}
+
+/* =============================================================
+   18. Foundry 核心介面 / Core FVTT surfaces
+   以系統 id 限定 —— 只在 To Change 世界內生效。
+   ============================================================= */
+
+body.system-to-change #sidebar,
+body.system-to-change #sidebar-tabs {
+  background: linear-gradient(180deg,
+    rgba(251,246,251,.95) 0%, rgba(241,230,241,.95) 100%);
+  border-left: 1px solid var(--tc-line-strong);
+  color: var(--tc-text);
+}
+
+body.system-to-change #sidebar-tabs > .item {
+  color: var(--tc-text-dim);
+  border: 1px solid transparent;
+  transition: all .15s ease;
+}
+body.system-to-change #sidebar-tabs > .item:hover {
+  color: var(--tc-purple);
+}
+body.system-to-change #sidebar-tabs > .item.active {
+  color: var(--tc-purple-deep);
+  border-bottom: 2px solid var(--tc-gold);
+}
+
+body.system-to-change #players {
+  background: rgba(251,246,251,.94);
+  border: 1px solid var(--tc-line-strong);
+  border-left: 3px solid var(--tc-gold);
+  border-radius: 6px;
+  color: var(--tc-text);
+  box-shadow: var(--tc-glow-soft);
+}
+body.system-to-change #players h3 {
+  color: var(--tc-purple-deep);
+  border-bottom: 1px solid var(--tc-gold);
+  letter-spacing: .08em;
+}
+body.system-to-change #players .player-name { color: var(--tc-text); }
+
+body.system-to-change #controls .scene-control,
+body.system-to-change #controls .control-tool {
+  background: rgba(251,246,251,.92);
+  border: 1px solid var(--tc-line-strong);
+  color: var(--tc-purple-deep);
+  transition: all .15s ease;
+}
+body.system-to-change #controls .scene-control:hover,
+body.system-to-change #controls .control-tool:hover {
+  border-color: var(--tc-gold);
+  color: var(--tc-purple);
+  box-shadow: 0 0 10px rgba(201,161,74,.4);
+}
+body.system-to-change #controls .scene-control.active,
+body.system-to-change #controls .control-tool.active {
+  background: linear-gradient(180deg, var(--tc-change), var(--tc-purple-deep));
+  border-color: var(--tc-gold);
+  color: #fff;
+  box-shadow: 0 0 12px rgba(154,111,208,.45);
+}
+
+body.system-to-change #navigation #scene-list .scene {
+  background: linear-gradient(180deg, var(--tc-vellum), var(--tc-lilac));
+  border: 1px solid var(--tc-line-strong);
+  color: var(--tc-text);
+}
+body.system-to-change #navigation #scene-list .scene.active {
+  border-color: var(--tc-gold);
+  box-shadow: 0 0 10px rgba(201,161,74,.4);
+  color: var(--tc-purple-deep);
+}
+
+body.system-to-change #chat-log .message {
+  background: linear-gradient(180deg, rgba(251,246,251,.97), rgba(241,230,241,.97));
+  border: 1px solid var(--tc-line-strong);
+  border-left: 3px solid var(--tc-rose);
+  border-radius: 6px;
+  color: var(--tc-text);
+  margin-bottom: 6px;
+}
+body.system-to-change #chat-log .message .message-sender {
+  color: var(--tc-purple-deep);
+  letter-spacing: .04em;
+}
+body.system-to-change #chat-log .message .message-metadata {
+  color: var(--tc-text-faint);
+}
+
+body.system-to-change #chat-form textarea {
+  background: rgba(255,255,255,.92);
+  border: 1px solid var(--tc-line-strong);
+  border-radius: 6px;
+  color: var(--tc-text);
+}
+body.system-to-change #chat-form textarea:focus {
+  border-color: var(--tc-purple);
+  box-shadow: 0 0 0 3px rgba(154,111,208,.22);
+}
+
+/* =============================================================
+   19. Foundry 核心對話框 / Core FVTT dialogs
+   套用到 To Change 世界內所有設定類視窗 (場景、權杖、使用者…),
+   即使它們不在 .to-change 命名空間下。
+   ============================================================= */
+
+body.system-to-change .app.window-app .window-content {
+  background:
+    var(--tc-halo),
+    linear-gradient(180deg, var(--tc-paper) 0%, var(--tc-paper-2) 100%) !important;
+  color: var(--tc-text) !important;
+  border: 1px solid var(--tc-line-strong) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.6),
+    inset 0 0 42px rgba(230,169,208,.12) !important;
+}
+
+body.system-to-change .app.window-app input[type="text"],
+body.system-to-change .app.window-app input[type="number"],
+body.system-to-change .app.window-app input[type="password"],
+body.system-to-change .app.window-app input[type="search"],
+body.system-to-change .app.window-app textarea,
+body.system-to-change .app.window-app select {
+  background: rgba(255,255,255,.88) !important;
+  color: var(--tc-text) !important;
+  border: 1px solid var(--tc-line-strong) !important;
+  border-radius: 6px !important;
+  box-shadow: inset 0 1px 3px rgba(111,79,150,.12) !important;
+}
+body.system-to-change .app.window-app input:focus,
+body.system-to-change .app.window-app textarea:focus,
+body.system-to-change .app.window-app select:focus {
+  outline: none !important;
+  border-color: var(--tc-purple) !important;
+  box-shadow: 0 0 0 3px rgba(154,111,208,.22) !important;
+}
+body.system-to-change .app.window-app select option {
+  background: var(--tc-paper) !important;
+  color: var(--tc-text) !important;
+}
+
+body.system-to-change .app.window-app label,
+body.system-to-change .app.window-app .form-group > label,
+body.system-to-change .app.window-app .form-fields > label {
+  color: var(--tc-purple-deep) !important;
+}
+body.system-to-change .app.window-app .notes,
+body.system-to-change .app.window-app .hint,
+body.system-to-change .app.window-app p.notes {
+  color: var(--tc-text-dim) !important;
+}
+body.system-to-change .app.window-app .form-group {
+  border-bottom: 1px dashed rgba(183,159,206,.4);
+}
+
+body.system-to-change .app.window-app h1,
+body.system-to-change .app.window-app h2,
+body.system-to-change .app.window-app h3,
+body.system-to-change .app.window-app h4 {
+  color: var(--tc-purple-deep) !important;
+  border-bottom: 1px solid var(--tc-gold);
+  font-family: var(--tc-font-display);
+  letter-spacing: .06em;
+}
+
+/* 核心對話框分頁 */
+body.system-to-change .app nav.tabs .item,
+body.system-to-change .app nav.sheet-tabs .item {
+  background: linear-gradient(180deg, var(--tc-vellum), var(--tc-lilac)) !important;
+  color: var(--tc-text-dim) !important;
+  border: 1px solid var(--tc-line-strong) !important;
+  border-bottom: none !important;
+  font-family: var(--tc-font-display);
+}
+body.system-to-change .app nav.tabs .item.active,
+body.system-to-change .app nav.sheet-tabs .item.active {
+  background: linear-gradient(180deg, #fff, var(--tc-mist)) !important;
+  color: var(--tc-purple-deep) !important;
+  border-color: var(--tc-gold) !important;
+  box-shadow: inset 0 2px 0 var(--tc-gold-soft) !important;
+}
+
+/* 核心對話框按鈕 */
+body.system-to-change .app.window-app button,
+body.system-to-change .app.window-app .dialog-button,
+body.system-to-change .app.window-app input[type="submit"] {
+  background: linear-gradient(180deg, var(--tc-vellum), var(--tc-lilac)) !important;
+  border: 1px solid var(--tc-line-strong) !important;
+  color: var(--tc-purple-deep) !important;
+  font-family: var(--tc-font-display);
+  border-radius: 7px !important;
+}
+body.system-to-change .app.window-app button:hover,
+body.system-to-change .app.window-app .dialog-button:hover {
+  border-color: var(--tc-gold) !important;
+  color: var(--tc-purple) !important;
+  box-shadow: 0 0 10px rgba(201,161,74,.3) !important;
+}
+body.system-to-change .app.window-app button[type="submit"],
+body.system-to-change .app.window-app button.bright {
+  background: linear-gradient(180deg, var(--tc-purple), var(--tc-purple-deep)) !important;
+  color: #fff !important;
+  border-color: var(--tc-gold) !important;
+}
+
+/* 核心對話框核取方塊 */
+body.system-to-change .app.window-app input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--tc-line-strong) !important;
+  border-radius: 5px;
+  background: rgba(255,255,255,.9) !important;
+  position: relative;
+  cursor: pointer;
+}
+body.system-to-change .app.window-app input[type="checkbox"]:checked {
+  background: linear-gradient(135deg, var(--tc-change), var(--tc-purple-deep)) !important;
+  border-color: var(--tc-gold) !important;
+}
+body.system-to-change .app.window-app input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  left: 5px; top: 1px;
+  width: 5px; height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* 核心對話框滑桿 (Token 透明度、視野範圍、光源…) */
+body.system-to-change .app.window-app input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent !important;
+  height: 20px;
+}
+body.system-to-change .app.window-app input[type="range"]::-webkit-slider-runnable-track {
+  height: 5px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--tc-pink), var(--tc-purple));
+}
+body.system-to-change .app.window-app input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px; height: 15px;
+  margin-top: -5px;
+  border-radius: 50%;
+  background: var(--tc-purple);
+  border: 2px solid #fff;
+  box-shadow: 0 0 6px rgba(154,111,208,.55);
+  cursor: pointer;
+}
+body.system-to-change .app.window-app input[type="range"]::-moz-range-track {
+  height: 5px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--tc-pink), var(--tc-purple));
+}
+body.system-to-change .app.window-app input[type="range"]::-moz-range-thumb {
+  width: 15px; height: 15px;
+  border-radius: 50%;
+  background: var(--tc-purple);
+  border: 2px solid #fff;
+  box-shadow: 0 0 6px rgba(154,111,208,.55);
+  cursor: pointer;
+}
+
+/* 核心對話框表格 */
+body.system-to-change .app.window-app table {
+  border-collapse: collapse;
+  border: 1px solid var(--tc-line-strong);
+}
+body.system-to-change .app.window-app table th {
+  background: linear-gradient(180deg, var(--tc-vellum), var(--tc-lilac)) !important;
+  color: var(--tc-purple-deep) !important;
+  border: 1px solid var(--tc-line-strong);
+}
+body.system-to-change .app.window-app table td {
+  border: 1px solid var(--tc-line);
+  color: var(--tc-text);
+}
+
+/* 資料目錄列表 / 資料夾標頭 (compendium、側欄目錄) */
+body.system-to-change .app .directory-list .directory-item {
+  background: linear-gradient(180deg, var(--tc-vellum), var(--tc-lilac)) !important;
+  border: 1px solid var(--tc-line) !important;
+  border-left: 3px solid var(--tc-rose) !important;
+  color: var(--tc-text) !important;
+}
+body.system-to-change .app .directory-list .directory-item:hover {
+  border-color: var(--tc-gold) !important;
+  box-shadow: 0 0 8px rgba(201,161,74,.3);
+}
+body.system-to-change .app .folder .folder-header {
+  background: linear-gradient(90deg,
+    rgba(230,169,208,.5) 0%,
+    rgba(246,237,246,.95) 50%,
+    rgba(183,159,206,.5) 100%) !important;
+  color: var(--tc-purple-deep) !important;
+  border-left: 3px solid var(--tc-gold) !important;
+  font-family: var(--tc-font-display);
+}
+
+/* 核心對話框編輯器 */
+body.system-to-change .app.window-app .editor,
+body.system-to-change .app.window-app .editor-content,
+body.system-to-change .app.window-app prose-mirror {
+  background: rgba(255,255,255,.82) !important;
+  border: 1px solid var(--tc-line-strong) !important;
+  color: var(--tc-text) !important;
+}
+
+/* 核心對話框捲軸 */
+body.system-to-change .app.window-app *::-webkit-scrollbar {
+  width: 11px; height: 11px;
+}
+body.system-to-change .app.window-app *::-webkit-scrollbar-track {
+  background: var(--tc-lilac);
+  border-radius: 6px;
+}
+body.system-to-change .app.window-app *::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--tc-purple), var(--tc-rose));
+  border: 2px solid var(--tc-lilac);
+  border-radius: 6px;
+}
+
+/* =============================================================
+   20. 版面防溢 / Layout safeguards
+   按鈕列／分頁遇到過長文字時改為「換行」,而非被裁切擠出視窗
+   外緣而消失 —— 即使語言檔未載入、顯示原始鍵值也不會破版。
+   ============================================================= */
+
+/* 行動占卜對話框按鈕列 —— 允許換行,draw/占卜 鈕不再被擠出左緣 */
+.to-change .resolution .resolution-actions,
+.resolution .resolution-actions {
+  flex-wrap: wrap;
+  row-gap: .4rem;
+}
+
+/* 屬性面板「占卜」鈕 —— 文字過長時於鈕內換行,不溢出格子 */
+.to-change .attr-cell .resolve-btn {
+  white-space: normal;
+  line-height: 1.15;
+  height: auto;
+}
+
+/* 角色卡分頁列 —— 分頁過多時換行,不裁切尾端分頁 */
+.to-change .sheet-tabs {
+  flex-wrap: wrap;
+}
+
+/* =============================================================
+   21. 自由抽牌 / 牌堆檢視 — 主題潤飾
+   ============================================================= */
+
+.to-change .free-draw {
+  border: 1px dashed var(--tc-line-strong);
+  background: rgba(255,255,255,.5);
+}
+.to-change .free-draw .free-draw-head { color: var(--tc-purple-deep); }
+.to-change .free-end-btn {
+  background: linear-gradient(180deg, var(--tc-vellum), var(--tc-lilac));
+  color: var(--tc-purple-deep);
+  transition: background .15s ease, color .15s ease;
+}
+.to-change .free-end-btn.active {
+  background: linear-gradient(180deg, var(--tc-purple), var(--tc-purple-deep));
+  color: #fff;
+  border-color: var(--tc-gold);
+  box-shadow: 0 0 10px rgba(154,111,208,.4);
+}
+.to-change .free-draw-btn {
+  background: linear-gradient(180deg, var(--tc-purple), var(--tc-purple-deep));
+  color: #fff;
+  border-color: var(--tc-gold);
+}
+.to-change .free-draw-btn:hover {
+  background: linear-gradient(180deg, var(--tc-change), var(--tc-purple));
+  color: #fff;
+}
+
+.deck-viewer .dv-summary {
+  background: rgba(255,255,255,.7);
+  border-color: var(--tc-line-strong);
+  box-shadow: var(--tc-glow-soft);
+}
+.deck-viewer .dv-count b {
+  font-family: var(--tc-font-display);
+  color: var(--tc-change);
+}
+.deck-viewer .dv-card {
+  background: rgba(255,255,255,.85);
+  border-color: var(--tc-line);
+}
+.deck-viewer .dv-draw .dv-card:first-child {
+  border-color: var(--tc-gold);
+  box-shadow: var(--tc-glow-gold);
+}
+.deck-viewer .dv-card img { border-color: var(--tc-gold); }
+.deck-viewer .dv-pos {
+  font-family: var(--tc-font-display);
+  color: var(--tc-change);
+}
+.deck-viewer .dv-name b { color: var(--tc-purple-deep); }
+
+/* =============================================================
+   22. 蛻化格子內的內容輸入欄 — 主題潤飾
+   ============================================================= */
+.to-change .cross-cell .cell-note,
+.to-change .wheel-aspect .aspect-note {
+  background: rgba(255,255,255,.93);
+  border: 1px solid var(--tc-line-strong);
+  color: var(--tc-text);
+  box-shadow: inset 0 1px 2px rgba(111,79,150,.12);
+}
+.to-change .cross-cell.changed .cell-note,
+.to-change .wheel-aspect.on .aspect-note {
+  border-color: var(--tc-gold);
+  background: rgba(255,255,255,.96);
+  color: var(--tc-text);
+}
+.to-change .cross-cell .cell-note:focus,
+.to-change .wheel-aspect .aspect-note:focus {
+  outline: none;
+  border-color: var(--tc-purple);
+  box-shadow: 0 0 0 2px rgba(154,111,208,.25);
+}

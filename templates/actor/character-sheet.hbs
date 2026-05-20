@@ -36,6 +36,27 @@
 
     {{!-- ============ 主要 ============ --}}
     <div class="tab" data-tab="main">
+            <div class="cards-panel">
+        <h3>{{localize "TOCHANGE.Cards.title"}}</h3>
+        <div class="card-slots">
+          {{#each cardSlots}}
+          <div class="card-slot slot-{{this.slot}}">
+            <div class="cs-head">{{this.slotLabel}}</div>
+            <div class="cs-art" data-action="pick-card" data-slot="{{this.slot}}">
+              <img src="{{this.img}}" alt="{{this.zh}}"/>
+              {{#if this.has}}<span class="cs-name">{{this.roman}} {{this.zh}}</span>{{/if}}
+            </div>
+            {{#if this.has}}
+            <div class="cs-ability">{{this.ability}}</div>
+            <button type="button" class="cs-clear" data-action="clear-card" data-slot="{{this.slot}}">
+              <i class="fas fa-xmark"></i></button>
+            {{else}}
+            <div class="cs-ability empty">{{localize "TOCHANGE.Cards.empty"}}</div>
+            {{/if}}
+          </div>
+          {{/each}}
+        </div>
+      </div>
 
       <div class="attr-strip">
         {{#each attrs}}
@@ -72,7 +93,10 @@
             {{#each this.cells}}
             <div class="cross-cell {{#if this.changed}}changed{{/if}} {{#if this.damaged}}damaged{{/if}}"
                  data-attr="{{../this.key}}" data-index="{{this.index}}"
-                 title="{{localize 'TOCHANGE.Cross.cellTip'}}"></div>
+                 title="{{localize 'TOCHANGE.Cross.cellTip'}}">
+              <input type="text" class="cell-note" data-attr="{{../this.key}}" data-index="{{this.index}}"
+                     value="{{this.note}}" placeholder="{{localize 'TOCHANGE.Field.changeNote'}}"/>
+            </div>
             {{/each}}
           </div>
           {{/each}}
@@ -103,6 +127,8 @@
                  data-attr="{{../this.key}}" data-index="{{this.index}}">
               <span class="wa-roman">{{this.roman}}</span>
               <span class="wa-label">{{this.label}}</span>
+              <input type="text" class="aspect-note" data-attr="{{../this.key}}" data-index="{{this.index}}"
+                     value="{{this.note}}" placeholder="{{localize 'TOCHANGE.Field.changeNote'}}"/>
             </div>
             {{/each}}
           </div>
@@ -118,27 +144,6 @@
       </div>
       {{/if}}
 
-      <div class="cards-panel">
-        <h3>{{localize "TOCHANGE.Cards.title"}}</h3>
-        <div class="card-slots">
-          {{#each cardSlots}}
-          <div class="card-slot slot-{{this.slot}}">
-            <div class="cs-head">{{this.slotLabel}}</div>
-            <div class="cs-art" data-action="pick-card" data-slot="{{this.slot}}">
-              <img src="{{this.img}}" alt="{{this.zh}}"/>
-              {{#if this.has}}<span class="cs-name">{{this.roman}} {{this.zh}}</span>{{/if}}
-            </div>
-            {{#if this.has}}
-            <div class="cs-ability">{{this.ability}}</div>
-            <button type="button" class="cs-clear" data-action="clear-card" data-slot="{{this.slot}}">
-              <i class="fas fa-xmark"></i></button>
-            {{else}}
-            <div class="cs-ability empty">{{localize "TOCHANGE.Cards.empty"}}</div>
-            {{/if}}
-          </div>
-          {{/each}}
-        </div>
-      </div>
     </div>
 
     {{!-- ============ 蛻化記錄 ============ --}}
